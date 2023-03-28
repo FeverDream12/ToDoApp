@@ -43,7 +43,61 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
+        <TextView
+            android:id="@+id/statTitle"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ваши задачи:"
+            android:textColor="?colorSecondaryVariant"
+            android:textSize="25sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"/>
+
+        <TextView
+            android:id="@+id/allTaskState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Всего поставленно задач: "
+            android:textSize="15sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"/>
+
+        <TextView
+            android:id="@+id/doneTaskState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Всего выполненно задач:"
+            android:textSize="15sp"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="20dp"/>
+
+        <TextView
+            android:id="@+id/doneTaskTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Выполненные задачи:"
+            android:textSize="15sp"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="20dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/statListRecycleView"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="5dp"
+            android:backgroundTint="@color/design_default_color_background"
+            />
+
+    </LinearLayout>
 
 
 
