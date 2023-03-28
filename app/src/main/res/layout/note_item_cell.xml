@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="9dp"
+    android:background="?colorSecondary"
+    app:cardCornerRadius="12dp"
+    android:elevation="8dp"
+    android:id="@+id/notesCard">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+        
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/noteTitle"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="Заголовок"
+
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="?colorSecondaryVariant"
+                    android:textSize="18sp"
+                    />
+
+                <ImageButton
+
+                    android:id="@+id/favBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:background="@color/white"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/star_border_24" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/noteText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Текст"
+            android:layout_alignParentStart="true"
+            android:textColor="?android:statusBarColor"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/noteDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Дата"
+            android:layout_alignParentStart="true"
+            android:textColor="?colorOnSecondary"
+            android:textSize="13sp"/>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

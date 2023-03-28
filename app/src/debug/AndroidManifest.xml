@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <activity
+            android:name="com.example.todoapp.StatisticActivity"
+            android:exported="false"
+            android:label="@string/title_activity_statistic"
+            android:theme="@style/Theme.ToDoApp.NoActionBar" />
+    </application>
+</manifest>

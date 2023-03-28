@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+    <item
+        android:id="@+id/nav_stat"
+        android:icon="@drawable/stat_24"
+        android:title="Статистика"/>
+
+    <item android:title="Избранные">
+
+        <menu>
+
+            <item
+                android:id="@+id/fav_tasks"
+                android:icon="@drawable/taskicon_24"
+                android:title="Задачи"/>
+
+            <item
+                android:id="@+id/fav_notes"
+                android:icon="@drawable/sticky_note_2_24"
+                android:title="Заметки"/>
+
+        </menu>
+
+    </item>
+
+</menu>
