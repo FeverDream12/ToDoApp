@@ -55,6 +55,4 @@ class HomeFragment : Fragment(), TaskItemClickListener {
     override fun deleteTaskItem(taskItem: TaskItem) {
         taskViewModel.deleteTaskItem(taskItem)
     }
-
-
 }

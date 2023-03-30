@@ -75,7 +75,7 @@
             android:layout_height="48dp"
             android:foregroundGravity="center"
             android:backgroundTint="?colorOnPrimary"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="16dp"
             app:srcCompat="@drawable/calendar_24"
             />
 
@@ -87,6 +87,16 @@
             android:backgroundTint="?colorOnPrimary"
             android:layout_marginStart="2dp"
             app:srcCompat="@drawable/time_24" />
+
+        <ImageButton
+            android:id="@+id/notifButton"
+            android:layout_width="48dp"
+            android:visibility="gone"
+            android:layout_height="48dp"
+            android:foregroundGravity="center"
+            android:backgroundTint="?colorOnPrimary"
+            android:layout_marginStart="2dp"
+            app:srcCompat="@drawable/notifications_black_24dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/saveButton"

@@ -24,8 +24,8 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
     private lateinit var binding: FragmentCalendarBinding
     private lateinit var selectedDate: LocalDate
     private var weekView: Boolean = false
-    private var selectedWeekDay: String = "1"
-    private var selectedDay: String = "32"
+    private var selectedWeekDay: String = LocalDate.now().dayOfMonth.toString()
+    private var selectedDay: String = LocalDate.now().dayOfMonth.toString()
 
 
     private val taskViewModel: TaskViewModel by viewModels {
@@ -39,16 +39,17 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
         selectedDate = LocalDate.now()
         weekView = false
 
+        setDate(selectedWeekDay)
 
         binding.weekViewArr.setOnClickListener{
             if(weekView){
                 setMonthView()
                 weekView = false
-                binding.weekViewArr.setImageResource(R.drawable.arrow_down_24)
+                binding.weekViewArr.setImageResource(R.drawable.arrow_up_24)
             }else{
                 setWeekView(selectedWeekDay)
                 weekView = true
-                binding.weekViewArr.setImageResource(R.drawable.arrow_up_24)
+                binding.weekViewArr.setImageResource(R.drawable.arrow_down_24)
             }
         }
 
@@ -66,8 +67,6 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
     private fun setMonthView() {
         binding.calendarText.text = monthYearFromDate(selectedDate)
         val daysInMonth: ArrayList<String> = daysInMonthArray(selectedDate)
-
-        val daysInWeek: ArrayList<String> = daysInWeekArray(daysInMonth, "26")
 
         val activity = this
 
@@ -154,11 +153,17 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
         selectedDate = selectedDate.minusMonths(1)
         binding.weekViewArr.setImageResource(R.drawable.arrow_down_24)
         viewReset()
+        if(selectedDate.month == LocalDate.now().month){
+            setDate(LocalDate.now().dayOfMonth.toString())
+        }
     }
     private fun nextMonthAction() {
         selectedDate = selectedDate.plusMonths(1)
         binding.weekViewArr.setImageResource(R.drawable.arrow_down_24)
         viewReset()
+        if(selectedDate.month == LocalDate.now().month){
+            setDate(LocalDate.now().dayOfMonth.toString())
+        }
     }
 
     private fun viewReset(){

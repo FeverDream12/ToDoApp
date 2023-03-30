@@ -39,6 +39,18 @@
             android:layout_weight="1"
             android:text="Name"></TextView>
 
+        <ImageView
+            android:id="@+id/notif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:backgroundTint="@android:color/transparent"
+            android:contentDescription="deletebutton"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            android:layout_marginTop="2dp"
+            android:src="@drawable/notifications_gray_24dp"></ImageView>
+
         <TextView
             android:id="@+id/dueTime"
             style="@style/TextAppearance.AppCompat.Title"
@@ -67,10 +79,22 @@
         android:id="@+id/date"
         android:textColor="?colorOnSecondary"
         android:layout_width="wrap_content"
+        android:gravity="end"
         android:layout_height="wrap_content"
         android:layout_marginStart="78dp"
         android:layout_marginTop="60dp"
         android:text="Date">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/lateDate"
+        android:textColor="@color/red"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="78dp"
+        android:layout_marginTop="60dp"
+        android:text="">
 
     </TextView>
 

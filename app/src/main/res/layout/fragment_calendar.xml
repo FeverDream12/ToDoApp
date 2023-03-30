@@ -43,13 +43,12 @@
             />
 
         <ImageView
-            android:layout_width="0dp"
             android:id="@+id/weekViewArr"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/arrow_down_24"
             android:layout_margin="4dp"
-            />
+            android:layout_weight="1"
+            app:srcCompat="@drawable/arrow_up_24" />
 
 
     </LinearLayout>

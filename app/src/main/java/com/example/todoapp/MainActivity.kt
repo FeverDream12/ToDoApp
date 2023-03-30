@@ -1,10 +1,14 @@
 package com.example.todoapp
 
+import android.app.*
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -26,18 +30,21 @@ import com.example.todoapp.ui.home.TaskItem.TaskItem
 import com.example.todoapp.databinding.ActivityMainBinding
 import com.example.todoapp.ui.home.TaskItem.TaskItemModelFactory
 import com.example.todoapp.ui.home.TaskItem.TaskViewModel
-import com.google.android.material.navigation.NavigationView
+import java.text.SimpleDateFormat
 
 class MainActivity : AppCompatActivity(), TaskItemClickListener, NoteItemClickListener {
 
-    private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var binding: ActivityMainBinding
+
+
     private val taskViewModel: TaskViewModel by viewModels {
         TaskItemModelFactory((application as TodoApplication).repository)
     }
     private val noteViewModel: NoteViewModel by viewModels {
         NoteItemModelFactory((application as TodoApplication).notesRepository)
     }
+
+    private val notificationPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +64,6 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener, NoteItemClickLi
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-
         binding.sideNavMenu.setNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.nav_stat -> {
@@ -66,13 +72,49 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener, NoteItemClickLi
                 }
                 R.id.fav_tasks -> Toast.makeText(applicationContext, "Tasks", Toast.LENGTH_SHORT).show()
                 R.id.fav_notes -> Toast.makeText(applicationContext, "Notes", Toast.LENGTH_SHORT).show()
-
             }
             true
         }
 
         setRecycleView()
         setNotesRecycleView()
+        requestNotificationPermission()
+        createNotificationChannel()
+        //scheduleNotification()
+    }
+
+    private fun scheduleNotification() {
+        val intent = Intent(this, NotificationReceiver::class.java)
+        val title = "title"
+        val message = "message"
+        intent.putExtra(titleExtra,title)
+        intent.putExtra(messageExtra,message)
+
+        val pendingIntent = PendingIntent.getBroadcast(this, 0,intent,PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val df = SimpleDateFormat("yyyy.MM.dd-HH:mm")
+        val time : Long = df.parse("2023.03.30-13:10").time
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis() + 30000,pendingIntent)
+    }
+
+    private fun createNotificationChannel() {
+        val name = "Name"
+        val desc = "Desc"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(channelId,name,importance)
+        channel.description = desc
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+
+    private fun requestNotificationPermission() {
+        notificationPermissionLauncher.launch(
+            android.Manifest.permission.POST_NOTIFICATIONS
+        )
+        notificationPermissionLauncher.launch(
+            android.Manifest.permission.SCHEDULE_EXACT_ALARM
+        )
     }
 
     private fun setRecycleView() {
@@ -94,7 +136,6 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener, NoteItemClickLi
                 adapter = NoteItemAdapter(it, activity)
             }
         }
-
     }
 
     override fun editTaskItem(taskItem: TaskItem) {
@@ -116,14 +157,4 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener, NoteItemClickLi
     override fun deleteNoteItem(noteItem: NoteItem) {
         TODO("Not yet implemented")
     }
-
-    private fun setFragment(fragment: Fragment, title: String){
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frameLay,fragment)
-        fragmentTransaction.commit()
-        binding.drawer.closeDrawers()
-    }
-
-
 }
