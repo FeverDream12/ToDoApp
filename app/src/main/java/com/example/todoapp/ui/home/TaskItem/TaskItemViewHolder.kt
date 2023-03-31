@@ -7,7 +7,9 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.R
 import com.example.todoapp.databinding.TaskItemCellBinding
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class TaskItemViewHolder(
@@ -28,7 +30,7 @@ class TaskItemViewHolder(
             binding.dueTime.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
         }
 
-        if(LocalDate.now().isAfter(LocalDate.parse(taskItem.dueDate)) && taskItem.status == "live"){
+        if(lateCheck(taskItem) && taskItem.status == "live"){
             binding.lateDate.text = "Опиздун! " + taskItem.dueDate
             binding.date.text = ""
         }else{
@@ -36,10 +38,10 @@ class TaskItemViewHolder(
             binding.lateDate.text = ""
         }
 
-        if(LocalDate.parse(taskItem.dueDate) == LocalDate.now()){
+        if(LocalDate.parse(taskItem.dueDate) == LocalDate.now() && !lateCheck(taskItem)){
             binding.date.text = "Сегодня"
         }
-        if(LocalDate.parse(taskItem.dueDate) == LocalDate.now().plusDays(1)){
+        if(LocalDate.parse(taskItem.dueDate) == LocalDate.now().plusDays(1) && !lateCheck(taskItem)){
             binding.date.text = "Завтра"
         }
 
@@ -72,5 +74,15 @@ class TaskItemViewHolder(
         }else{
             binding.dueTime.text = ""
         }
+    }
+
+    fun lateCheck(taskItem: TaskItem) : Boolean{
+        if(taskItem.dueTimeString != null){
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            return LocalDateTime.now().isAfter(LocalDateTime.parse(taskItem.dueDate + " " + taskItem.dueTimeString,formatter))
+        }else{
+            return LocalDate.now().isAfter(LocalDate.parse(taskItem.dueDate))
+        }
+
     }
 }
