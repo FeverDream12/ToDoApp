@@ -9,5 +9,6 @@ class NoteItem(
     @ColumnInfo(name = "title") var title: String,
     @ColumnInfo(name = "note") var note: String,
     @ColumnInfo(name = "date") var date: String,
+    @ColumnInfo(name = "isFavourite") var isFavourite: String,
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 )

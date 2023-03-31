@@ -4,4 +4,5 @@ interface NoteItemClickListener {
 
     fun editNoteItem(noteItem: NoteItem)
     fun deleteNoteItem(noteItem: NoteItem)
+    fun setNoteFavorite(noteItem: NoteItem)
 }

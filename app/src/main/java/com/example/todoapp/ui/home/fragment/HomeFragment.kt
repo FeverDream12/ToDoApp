@@ -1,5 +1,9 @@
 package com.example.todoapp.ui.home.fragment
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +38,16 @@ class HomeFragment : Fragment(), TaskItemClickListener {
         return binding.root
     }
 
+    private fun cancelScheduledNotification(id: Int) {
+        val intent = Intent(requireContext(), NotificationReceiver::class.java)
+
+        val pendingIntent = PendingIntent.getBroadcast(requireContext(), id,intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        alarmManager.cancel(pendingIntent)
+    }
+
     private fun setRecycleView() {
         val activity = this
         taskViewModel.liveTaskItems.observe(viewLifecycleOwner){
@@ -54,5 +68,8 @@ class HomeFragment : Fragment(), TaskItemClickListener {
 
     override fun deleteTaskItem(taskItem: TaskItem) {
         taskViewModel.deleteTaskItem(taskItem)
+        if(taskItem.notificationId != null){
+            cancelScheduledNotification(taskItem.notificationId!!)
+        }
     }
 }

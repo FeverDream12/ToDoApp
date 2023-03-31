@@ -39,9 +39,19 @@ class NoteItemViewHolder(
                 }
             }
         }
+        if(noteItem.isFavourite == "true"){
+            binding.favBtn.setImageResource(R.drawable.star_24)
+        }else{
+            binding.favBtn.setImageResource(R.drawable.star_border_24)
+        }
 
         binding.favBtn.setOnClickListener{
-            binding.favBtn.setImageResource(R.drawable.star_24)
+            if(noteItem.isFavourite == "true"){
+                binding.favBtn.setImageResource(R.drawable.star_border_24)
+            }else{
+                binding.favBtn.setImageResource(R.drawable.star_24)
+            }
+            clickListener.setNoteFavorite(noteItem)
         }
 
         binding.notesCard.setOnLongClickListener{

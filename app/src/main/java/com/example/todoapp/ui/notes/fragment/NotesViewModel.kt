@@ -23,7 +23,4 @@ class NotesViewModel (private val repository: NoteItemRepository): ViewModel()  
         repository.deleteNoteItem(noteItem)
     }
 
-    fun searchNoteItem(searchQuery: String): LiveData<List<NoteItem>>{
-        return repository.searchNoteItem(searchQuery)
-    }
 }

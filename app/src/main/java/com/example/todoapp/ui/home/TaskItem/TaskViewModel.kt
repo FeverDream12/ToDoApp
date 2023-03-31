@@ -1,6 +1,13 @@
 package com.example.todoapp.ui.home.TaskItem
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.*
+import com.example.todoapp.NotificationReceiver
 import com.example.todoapp.ui.notes.NoteItem.NoteItem
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -41,6 +48,7 @@ class TaskViewModel(private val repository: TaskItemRepository): ViewModel() {
             taskItem.status = "done"
             repository.updateTaskItem(taskItem)
         }
+
     }
 
     fun searchTaskItemByDate(searchQuery: String): LiveData<List<TaskItem>> {

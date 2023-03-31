@@ -6,5 +6,11 @@
             android:exported="false"
             android:label="@string/title_activity_statistic"
             android:theme="@style/Theme.ToDoApp.NoActionBar" />
+
+        <activity
+            android:name="com.example.todoapp.FavouriteNotesActivity"
+            android:exported="false"
+            android:label="FavouriteNotesActivity"
+            android:theme="@style/Theme.ToDoApp.NoActionBar" />
     </application>
 </manifest>

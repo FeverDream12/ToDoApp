@@ -70,8 +70,14 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener, NoteItemClickLi
                     val int = Intent(this,StatisticActivity::class.java)
                     startActivity(int)
                 }
-                R.id.fav_tasks -> Toast.makeText(applicationContext, "Tasks", Toast.LENGTH_SHORT).show()
-                R.id.fav_notes -> Toast.makeText(applicationContext, "Notes", Toast.LENGTH_SHORT).show()
+                R.id.fav_tasks -> {
+                val int = Intent(this,FavouriteNotesActivity::class.java)
+                    startActivity(int)
+                }
+                R.id.fav_notes -> {
+                    val int = Intent(this,FavouriteNotesActivity::class.java)
+                    startActivity(int)
+                }
             }
             true
         }
@@ -80,22 +86,6 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener, NoteItemClickLi
         setNotesRecycleView()
         requestNotificationPermission()
         createNotificationChannel()
-        //scheduleNotification()
-    }
-
-    private fun scheduleNotification() {
-        val intent = Intent(this, NotificationReceiver::class.java)
-        val title = "title"
-        val message = "message"
-        intent.putExtra(titleExtra,title)
-        intent.putExtra(messageExtra,message)
-
-        val pendingIntent = PendingIntent.getBroadcast(this, 0,intent,PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val df = SimpleDateFormat("yyyy.MM.dd-HH:mm")
-        val time : Long = df.parse("2023.03.30-13:10").time
-
-        alarmManager.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis() + 30000,pendingIntent)
     }
 
     private fun createNotificationChannel() {
@@ -155,6 +145,10 @@ class MainActivity : AppCompatActivity(), TaskItemClickListener, NoteItemClickLi
     }
 
     override fun deleteNoteItem(noteItem: NoteItem) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setNoteFavorite(noteItem: NoteItem) {
         TODO("Not yet implemented")
     }
 }

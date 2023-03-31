@@ -1,5 +1,6 @@
 package com.example.todoapp.ui.notes.NoteItem
 
+import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
@@ -8,14 +9,14 @@ interface NoteItemDao {
     @Query("SELECT * FROM note_item_table ORDER BY id DESC")
     fun allNoteItems(): LiveData<List<NoteItem>>
 
+    @Query("SELECT * FROM note_item_table WHERE isFavourite LIKE 'true' ORDER BY id DESC")
+    fun favouriteNoteItems(): LiveData<List<NoteItem>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNoteItem(noteItem: NoteItem)
 
     @Update
     suspend fun updateNoteItem(noteItem: NoteItem)
-
-//    @Query("UPDATE note_item_table Set title = :title, note = :note WHERE id = :id")
-//    suspend fun updateNoteItem(id: Int?, title: String?, note: String?)
 
     @Delete
     suspend fun deleteNoteItem(noteItem: NoteItem)

@@ -32,7 +32,6 @@ class NewTaskSheet(var taskItem: TaskItem?) : BottomSheetDialogFragment() {
     private var dueDate: String? = null
     private var gotNot: Boolean = false
 
-
     @SuppressLint("ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,6 +48,12 @@ class NewTaskSheet(var taskItem: TaskItem?) : BottomSheetDialogFragment() {
             if(taskItem!!.dueDate != null){
                 dueDate = taskItem!!.dueDate!!
                 binding.DueText.text = "Отложено на: " + taskItem!!.dueDate
+            }
+            if(taskItem!!.notificationId != null){
+                gotNot = true
+            }
+            if(taskItem!!.dueTimeString != null){
+                binding.notifButton.visibility = ImageButton.VISIBLE
             }
         }else{
             binding.taskTitle.text = "Новая задача"
@@ -177,7 +182,13 @@ class NewTaskSheet(var taskItem: TaskItem?) : BottomSheetDialogFragment() {
                     taskItem!!.dueDate = dueDate
                 }
 
-                if(gotNot){
+                if(gotNot && taskItem!!.notificationId == null) {
+                    taskItem!!.notificationId = nextInt()
+                    scheduleNotification(taskItem!!.notificationId!!)
+                }
+
+                if(gotNot && taskItem!!.notificationId != null) {
+                    cancelScheduledNotification(taskItem!!.notificationId!!)
                     taskItem!!.notificationId = nextInt()
                     scheduleNotification(taskItem!!.notificationId!!)
                 }

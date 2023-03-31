@@ -31,9 +31,8 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:text="Заголовок"
-
                     style="@style/TextAppearance.AppCompat.Title"
-                    android:textColor="?colorSecondaryVariant"
+                    android:textColor="?colorPrimary"
                     android:textSize="18sp"
                     />
 
@@ -43,7 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:background="@color/white"
+                    android:background="@null"
                     android:layout_alignParentEnd="true"
                     android:src="@drawable/star_border_24" />
 
@@ -59,7 +58,7 @@
             android:layout_marginTop="5dp"
             android:text="Текст"
             android:layout_alignParentStart="true"
-            android:textColor="?android:statusBarColor"
+            android:textColor="?colorSecondaryVariant"
             android:textSize="15sp"/>
 
         <TextView

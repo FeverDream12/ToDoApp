@@ -56,5 +56,6 @@ class StatisticActivity : AppCompatActivity(), TaskItemClickListener {
     }
 
     override fun deleteTaskItem(taskItem: TaskItem) {
+        taskViewModel.deleteTaskItem(taskItem)
     }
 }

@@ -88,4 +88,13 @@ class NotesFragment : Fragment(), NoteItemClickListener {
     override fun deleteNoteItem(noteItem: NoteItem) {
         noteViewModel.deleteNoteItem(noteItem)
     }
+
+    override fun setNoteFavorite(noteItem: NoteItem) {
+        if(noteItem.isFavourite == "true"){
+            noteItem.isFavourite = "false"
+        }else{
+            noteItem.isFavourite = "true"
+        }
+        noteViewModel.updateNoteItem(noteItem)
+    }
 }

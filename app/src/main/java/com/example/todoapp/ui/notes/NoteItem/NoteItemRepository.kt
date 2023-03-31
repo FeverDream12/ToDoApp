@@ -8,6 +8,10 @@ class NoteItemRepository(private val noteItemDao: NoteItemDao) {
     val allNoteItems: LiveData<List<NoteItem>> = noteItemDao.allNoteItems()
 
     @WorkerThread
+    fun favouriteNoteItems(): LiveData<List<NoteItem>> {
+        return noteItemDao.favouriteNoteItems()
+    }
+    @WorkerThread
     suspend fun insertNoteItem(noteItem: NoteItem){
         noteItemDao.insertNoteItem(noteItem)
     }

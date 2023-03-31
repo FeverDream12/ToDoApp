@@ -9,6 +9,9 @@ import kotlinx.coroutines.launch
 class NoteViewModel(private val repository: NoteItemRepository): ViewModel() {
     var noteItems: LiveData<List<NoteItem>> = repository.allNoteItems
 
+    fun favouriteNoteItems(): LiveData<List<NoteItem>> {
+        return repository.favouriteNoteItems()
+    }
 
     fun addNoteItem(newNote: NoteItem) = viewModelScope.launch {
         repository.insertNoteItem(newNote)

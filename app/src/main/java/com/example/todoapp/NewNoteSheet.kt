@@ -55,7 +55,7 @@ class NewNoteSheet(var noteItem: NoteItem?) : BottomSheetDialogFragment(){
         if(title.isNotEmpty() || note.isNotEmpty()){
             if(noteItem == null)
             {
-                val newNote = NoteItem(title,note,date)
+                val newNote = NoteItem(title,note,date,"false")
                 noteViewModel.addNoteItem(newNote)
             }else
             {
