@@ -2,6 +2,7 @@ package com.example.todoapp.ui.home.TaskItem
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
+import androidx.room.Query
 import com.example.todoapp.ui.notes.NoteItem.NoteItem
 
 class TaskItemRepository(private val taskItemDao: TaskItemDao) {

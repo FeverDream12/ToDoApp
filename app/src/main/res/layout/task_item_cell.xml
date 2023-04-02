@@ -24,20 +24,20 @@
             android:layout_margin="15dp"
             android:backgroundTint="@android:color/transparent"
             android:contentDescription="checkbox"
-
             android:scaleX="1.5"
             android:scaleY="1.5"
-            android:src="@drawable/unchecked_24"></ImageButton>
+            android:src="@drawable/unchecked_24"/>
 
         <TextView
             android:id="@+id/name"
             style="@style/TextAppearance.AppCompat.Title"
-            android:textColor="?colorPrimary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:text="Name"></TextView>
+            android:maxHeight="30dp"
+            android:text="Name"
+            android:textColor="?colorPrimary" />
 
         <ImageView
             android:id="@+id/notif"
@@ -50,7 +50,7 @@
             android:scaleX="1.2"
             android:scaleY="1.2"
             android:layout_marginTop="2dp"
-            android:src="@drawable/notifications_gray_24dp"></ImageView>
+            android:src="@drawable/notifications_gray_24dp"/>
 
         <TextView
             android:id="@+id/dueTime"
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginHorizontal="5dp"
-            android:text="Time"></TextView>
+            android:text="Time"/>
 
         <ImageButton
             android:id="@+id/deleteButton"
@@ -72,7 +72,7 @@
             android:contentDescription="deletebutton"
             android:scaleX="1.5"
             android:scaleY="1.5"
-            android:src="@drawable/delete_24"></ImageButton>
+            android:src="@drawable/delete_24"/>
 
     </LinearLayout>
 

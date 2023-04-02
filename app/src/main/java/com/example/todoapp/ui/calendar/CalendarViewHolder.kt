@@ -3,6 +3,7 @@ package com.example.todoapp.ui.calendar
 import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.isInvisible
 import androidx.fragment.app.viewModels
@@ -39,7 +40,9 @@ class CalendarViewHolder(
         }
 
         if(binding.cellDayText.text == selectedDay){
-            binding.calendarItem.setCardBackgroundColor(R.color.purple_500)
+            binding.outline.visibility = CardView.VISIBLE
+        }else{
+            binding.outline.visibility = CardView.INVISIBLE
         }
 
         if(str != 0){

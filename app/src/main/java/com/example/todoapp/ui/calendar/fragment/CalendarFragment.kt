@@ -18,6 +18,7 @@ import com.example.todoapp.ui.home.TaskItem.*
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
+import kotlin.time.Duration.Companion.days
 
 class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickListener {
 
@@ -120,8 +121,6 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
 
         val daysInWeekArray = ArrayList<String>()
 
-        val yearMonth: YearMonth = YearMonth.from(selectedDate)
-
         val firstDayOfMonth: LocalDate = selectedDate.withDayOfMonth(1)
         val dayOfWeek: Int = firstDayOfMonth.getDayOfWeek().value
 
@@ -132,10 +131,13 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
 
         val firstWeekDay : Int = day.toInt() - weekDay + 1
 
+        val yearMonth: YearMonth = YearMonth.from(selectedDate)
+        val daysInMonth: Int = yearMonth.lengthOfMonth()
+
         for(i in 1..7){
             var dayInt: Int = firstWeekDay + i - 1
 
-            if(dayInt <= 0){
+            if(dayInt <= 0 || dayInt > daysInMonth){
                 daysInWeekArray.add("")
             }else{
                 daysInWeekArray.add(dayInt.toString())
