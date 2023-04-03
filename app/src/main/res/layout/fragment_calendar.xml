@@ -130,7 +130,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/calendarView"/>
+        android:id="@+id/calendarView"
+        android:layout_marginEnd="2dp"/>
 
     <TextView
         android:layout_width="match_parent"

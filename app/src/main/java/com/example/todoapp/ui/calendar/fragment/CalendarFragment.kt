@@ -28,7 +28,6 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
     private var selectedWeekDay: String = LocalDate.now().dayOfMonth.toString()
     private var selectedDay: String = LocalDate.now().dayOfMonth.toString()
 
-
     private val taskViewModel: TaskViewModel by viewModels {
         val application = requireContext()
         TaskItemModelFactory((application.applicationContext as TodoApplication).repository)

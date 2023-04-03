@@ -4,44 +4,92 @@ import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources.Theme
 import android.os.Bundle
 import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.todoapp.ui.home.TaskItem.TaskItem
 import com.example.todoapp.databinding.FragmentNewTaskSheetBinding
 import com.example.todoapp.ui.home.TaskItem.TaskViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.textfield.TextInputEditText
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.random.Random.Default.nextInt
 
 class NewTaskSheet(var taskItem: TaskItem?) : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentNewTaskSheetBinding
     private lateinit var taskViewModel: TaskViewModel
+
+    //private lateinit var categoriesViewModel: CategoriesViewModel
+
+//    private val categoriesViewModel: CategoriesViewModel by viewModels {
+//        CategoriesModelFactory((requireActivity().application as TodoApplication).categoriesRepository)
+//    }
+
     private var dueTime: LocalTime? = null
     private var dueDate: String? = null
     private var gotNot: Boolean = false
+    private var taskCat = "Без категории"
+    private var otherCat = true
 
     @SuppressLint("ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val activity = requireActivity()
 
+        val categories = ArrayList<String>()
+        categories.add(0,"Без категории")
+        categories.add(1,"Работа")
+        categories.add(2,"Учеба")
+        categories.add(3,"Личное")
+        categories.add(4,"Другое")
+
+
+        val adapter = ArrayAdapter(requireContext(),R.layout.categorylist_item, categories)
+
+
+        if(taskItem != null){
+            taskCat = taskItem!!.category!!
+            binding.categoryMenu.setText(taskCat)
+        }else{
+            binding.categoryMenu.setText("Без категории")
+        }
+
+        binding.categoryMenu.setAdapter(adapter)
+
+        binding.categoryMenu.onItemClickListener = AdapterView.OnItemClickListener{
+            adapterView, view, i, l ->
+            val selectedItem = adapterView.getItemAtPosition(i)
+            if (selectedItem == "Другое"){
+                otherCat = true
+                binding.myCategory.visibility = TextInputEditText.VISIBLE
+            }else{
+                taskCat = selectedItem.toString()
+                otherCat = false
+                binding.myCategory.visibility = TextInputEditText.GONE
+            }
+        }
+
+
         if(taskItem != null){
             binding.taskTitle.text = "Изменить задачу"
             val editable = Editable.Factory.getInstance()
             binding.name.text = editable.newEditable(taskItem!!.name)
             binding.desc.text = editable.newEditable(taskItem!!.desc)
+
+
+
             if (taskItem!!.dueTime() != null){
                 dueTime = taskItem!!.dueTime()!!
             }
@@ -136,6 +184,7 @@ class NewTaskSheet(var taskItem: TaskItem?) : BottomSheetDialogFragment() {
         val listener = TimePickerDialog.OnTimeSetListener{_, selectedHour, selectedMinute ->
             dueTime = LocalTime.of(selectedHour,selectedMinute)
         }
+
         val dialog = TimePickerDialog(activity, listener, dueTime!!.hour,dueTime!!.minute, true)
         dialog.setTitle("Время")
         dialog.show()
@@ -151,15 +200,19 @@ class NewTaskSheet(var taskItem: TaskItem?) : BottomSheetDialogFragment() {
         val desc = binding.desc.text.toString()
         val dueTimeString = if(dueTime == null) null else TaskItem.timeFormatter.format(dueTime)
 
+        if (otherCat && binding.myCategory.text.toString() != ""){
+            taskCat = binding.myCategory.text.toString()
+        }
+
         if(name != ""){
             if(taskItem == null)
             {
                 val newTask : TaskItem
                 if(dueDate == null){
-                    newTask = TaskItem(name,desc,dueTimeString,null, LocalDate.now().toString(),"live",null)
+                    newTask = TaskItem(name,desc,dueTimeString,null, LocalDate.now().toString(),"live",null,taskCat)
                 }
                 else{
-                    newTask = TaskItem(name,desc,dueTimeString,null, dueDate,"live",null)
+                    newTask = TaskItem(name,desc,dueTimeString,null, dueDate,"live",null,taskCat)
                 }
 
                 if(gotNot){
@@ -172,6 +225,7 @@ class NewTaskSheet(var taskItem: TaskItem?) : BottomSheetDialogFragment() {
             {
                 taskItem!!.name = name
                 taskItem!!.desc = desc
+                taskItem!!.category = taskCat
 
                 taskItem!!.dueTimeString = dueTimeString
 
@@ -197,6 +251,7 @@ class NewTaskSheet(var taskItem: TaskItem?) : BottomSheetDialogFragment() {
                     cancelScheduledNotification(taskItem!!.notificationId!!)
                     taskItem!!.notificationId = null
                 }
+
 
                 taskViewModel.updateTaskItem(taskItem!!)
             }

@@ -19,6 +19,7 @@ class TaskItem(
     @ColumnInfo(name = "dueDate") var dueDate: String?,
     @ColumnInfo(name = "status") var status: String,
     @ColumnInfo(name = "notificationId") var notificationId: Int?,
+    @ColumnInfo(name = "category") var category: String?,
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 ){
 

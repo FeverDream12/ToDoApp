@@ -35,7 +35,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:maxHeight="30dp"
             android:text="Name"
             android:textColor="?colorPrimary" />
 
@@ -76,28 +75,31 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/date"
-        android:textColor="?colorOnSecondary"
-        android:layout_width="wrap_content"
-        android:gravity="end"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="78dp"
-        android:layout_marginTop="60dp"
-        android:text="Date">
-
-    </TextView>
-
-    <TextView
-        android:id="@+id/lateDate"
-        android:textColor="@color/red"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginStart="78dp"
-        android:layout_marginTop="60dp"
-        android:text="">
+        android:layout_marginTop="63dp">
 
-    </TextView>
+        <TextView
+            android:id="@+id/date"
+            android:textColor="?colorOnSecondary"
+            android:layout_width="wrap_content"
+            android:gravity="end"
+            android:layout_height="wrap_content"
+            android:text="Date"/>
+
+        <TextView
+            android:id="@+id/lateDate"
+            android:textColor="@color/red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""/>
+
+    </LinearLayout>
+
+
 
 
 </androidx.cardview.widget.CardView>

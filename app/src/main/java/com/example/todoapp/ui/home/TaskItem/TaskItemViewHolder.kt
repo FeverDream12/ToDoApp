@@ -4,9 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Paint
 import android.widget.ImageView
+import android.widget.PopupMenu
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.R
 import com.example.todoapp.databinding.TaskItemCellBinding
+import com.example.todoapp.ui.notes.NoteItem.NoteItem
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -24,6 +27,8 @@ class TaskItemViewHolder(
     fun bindTaskItem(taskItem: TaskItem){
         binding.name.text = taskItem.name
         binding.date.text = taskItem.dueDate
+
+        popupMenu(taskItem)
 
         if(taskItem.isCompleted()){
             binding.name.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
@@ -76,6 +81,8 @@ class TaskItemViewHolder(
         }
     }
 
+
+
     fun lateCheck(taskItem: TaskItem) : Boolean{
         if(taskItem.dueTimeString != null){
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -84,5 +91,40 @@ class TaskItemViewHolder(
             return LocalDate.now().isAfter(LocalDate.parse(taskItem.dueDate))
         }
 
+    }
+
+    private fun popupMenu(taskItem: TaskItem) {
+        val popupMenu = PopupMenu(context,binding.taskCellContainer)
+        popupMenu.inflate(R.menu.pop_up_menu)
+
+        popupMenu.setOnMenuItemClickListener {
+            when(it.itemId){
+                R.id.delete_note ->{
+                    clickListener.deleteTaskItem(taskItem)
+                    true
+                }
+                else -> {
+                    true
+                }
+            }
+        }
+
+
+        binding.taskCellContainer.setOnLongClickListener{
+            try {
+                val popup = PopupMenu::class.java.getDeclaredField("mpop")
+                popup.isAccessible = true
+
+                val menu = popup.get(popupMenu)
+                menu.javaClass
+                    .getDeclaredMethod("setForceShowIcon", Boolean::class.java)
+                    .invoke(menu, true)
+            } catch (e: Exception){
+                e.printStackTrace()
+            }finally {
+                popupMenu.show()
+            }
+            true
+        }
     }
 }
