@@ -27,7 +27,7 @@ class CalendarAdapter(
     }
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
-        holder.dayMonth.setText(daysInMonth.get(position))
+        holder.dayMonth.text = daysInMonth[position]
         holder.bindCalendarItem(yearMonth, taskViewModel,selectedDay)
     }
 

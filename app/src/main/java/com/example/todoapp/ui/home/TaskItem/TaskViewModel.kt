@@ -40,11 +40,13 @@ class TaskViewModel(private val repository: TaskItemRepository): ViewModel() {
             taskItem.status = "done"
             repository.updateTaskItem(taskItem)
         }
-
     }
-
     fun searchTaskItemByDate(searchQuery: String): LiveData<List<TaskItem>> {
         return repository.searchTaskItemByDate(searchQuery)
+    }
+
+    fun searchTaskItemByCategory(searchQuery: String): LiveData<List<TaskItem>> {
+        return repository.searchTaskItemByCategory(searchQuery)
     }
 }
 

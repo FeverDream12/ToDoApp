@@ -25,9 +25,13 @@ class TaskItemRepository(private val taskItemDao: TaskItemDao) {
     suspend fun deleteTaskItem(taskItem: TaskItem){
         taskItemDao.deleteTaskItem(taskItem)
     }
-
     @WorkerThread
     fun searchTaskItemByDate(searchQuery: String): LiveData<List<TaskItem>> {
         return taskItemDao.searchTaskItemByDate(searchQuery)
+    }
+
+    @WorkerThread
+    fun searchTaskItemByCategory(searchQuery: String): LiveData<List<TaskItem>> {
+        return taskItemDao.searchTaskItemByCategory(searchQuery)
     }
 }

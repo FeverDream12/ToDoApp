@@ -30,13 +30,6 @@ class NewTaskSheet(var taskItem: TaskItem?) : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentNewTaskSheetBinding
     private lateinit var taskViewModel: TaskViewModel
-
-    //private lateinit var categoriesViewModel: CategoriesViewModel
-
-//    private val categoriesViewModel: CategoriesViewModel by viewModels {
-//        CategoriesModelFactory((requireActivity().application as TodoApplication).categoriesRepository)
-//    }
-
     private var dueTime: LocalTime? = null
     private var dueDate: String? = null
     private var gotNot: Boolean = false
@@ -49,11 +42,26 @@ class NewTaskSheet(var taskItem: TaskItem?) : BottomSheetDialogFragment() {
         val activity = requireActivity()
 
         val categories = ArrayList<String>()
-        categories.add(0,"Без категории")
-        categories.add(1,"Работа")
-        categories.add(2,"Учеба")
-        categories.add(3,"Личное")
-        categories.add(4,"Другое")
+        categories.add("Без категории")
+        categories.add("Работа")
+        categories.add("Учеба")
+        categories.add("Личное")
+
+        taskViewModel = ViewModelProvider(activity)[TaskViewModel::class.java]
+
+        val itemList: List<TaskItem>? = taskViewModel.liveTaskItems.value
+        if(itemList!= null){
+            val itemArray =  ArrayList(itemList)
+            itemArray.forEach {
+                if(categories.contains(it.category.toString())){
+
+                }else{
+                    categories.add(it.category.toString())
+                }
+            }
+        }
+
+        categories.add("Другое")
 
 
         val adapter = ArrayAdapter(requireContext(),R.layout.categorylist_item, categories)

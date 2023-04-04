@@ -33,11 +33,11 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
         TaskItemModelFactory((application.applicationContext as TodoApplication).repository)
     }
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentCalendarBinding.inflate(inflater, container, false)
         selectedDate = LocalDate.now()
         weekView = false
+
 
         setDate(selectedWeekDay)
 
@@ -219,13 +219,15 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
     private fun setRecycleView(toString: String) {
         val activity = this
 
+        taskViewModel.taskItems.observe(viewLifecycleOwner){}
+
         taskViewModel.searchTaskItemByDate(toString).observe(viewLifecycleOwner){
             binding.listRecycleView.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = TaskItemAdapter(it, activity)
             }
+            setMonthView()
         }
-
     }
 
     override fun editTaskItem(taskItem: TaskItem) {

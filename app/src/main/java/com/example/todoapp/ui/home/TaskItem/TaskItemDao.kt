@@ -10,7 +10,7 @@ interface TaskItemDao {
     @Query("SELECT * FROM task_item_table ORDER BY id ASC")
     fun allTaskItems(): LiveData<List<TaskItem>>
 
-    @Query("SELECT * FROM task_item_table WHERE status LIKE 'live' OR status LIKE 'completed' ORDER BY id ASC")
+    @Query("SELECT * FROM task_item_table WHERE status NOT LIKE 'done' ORDER BY id ASC")
     fun liveTaskItems(): LiveData<List<TaskItem>>
 
     @Query("SELECT * FROM task_item_table WHERE status LIKE 'done' ORDER BY id ASC")
@@ -28,5 +28,8 @@ interface TaskItemDao {
 
     @Query("SELECT * FROM task_item_table WHERE dueDate LIKE :searchQuery AND status NOT LIKE 'done'")
     fun searchTaskItemByDate(searchQuery: String): LiveData<List<TaskItem>>
+
+    @Query("SELECT * FROM task_item_table WHERE category LIKE :searchQuery AND status NOT LIKE 'done'")
+    fun searchTaskItemByCategory(searchQuery: String): LiveData<List<TaskItem>>
 
 }
