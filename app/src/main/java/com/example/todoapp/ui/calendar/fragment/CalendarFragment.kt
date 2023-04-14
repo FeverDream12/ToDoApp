@@ -1,24 +1,29 @@
 package com.example.todoapp.ui.calendar.fragment
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.todoapp.NewTaskSheet
+import com.example.todoapp.NotificationReceiver
+import com.example.todoapp.itemSheets.NewTaskSheet
 import com.example.todoapp.R
-import com.example.todoapp.TodoApplication
 import com.example.todoapp.ui.calendar.CalendarAdapter
 import com.example.todoapp.ui.calendar.CalendarItemClickListener
 import com.example.todoapp.databinding.FragmentCalendarBinding
 import com.example.todoapp.ui.home.TaskItem.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
-import kotlin.time.Duration.Companion.days
 
 class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickListener {
 
@@ -28,18 +33,37 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
     private var selectedWeekDay: String = LocalDate.now().dayOfMonth.toString()
     private var selectedDay: String = LocalDate.now().dayOfMonth.toString()
 
-    private val taskViewModel: TaskViewModel by viewModels {
-        val application = requireContext()
-        TaskItemModelFactory((application.applicationContext as TodoApplication).repository)
-    }
+    private lateinit var taskList: ArrayList<TaskItem>
+    private lateinit var databaseRef: DatabaseReference
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentCalendarBinding.inflate(inflater, container, false)
         selectedDate = LocalDate.now()
         weekView = false
 
+        auth = FirebaseAuth.getInstance()
+        databaseRef = FirebaseDatabase.getInstance().reference.child("TaskItems").child(auth.currentUser?.uid.toString())
+        taskList = arrayListOf<TaskItem>()
 
-        setDate(selectedWeekDay)
+        databaseRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                taskList.clear()
+                if(snapshot.exists()){
+                    snapshot.children.map{
+                        val task : TaskItem? = it.getValue(TaskItem::class.java)
+                        task!!.id = it.key
+                        taskList.add(task!!)
+                    }
+                }
+                setCalendarView()
+                setDate(selectedDay)
+                //setRecycleView(selectedDate.toString())
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+            }
+        })
 
         binding.weekViewArr.setOnClickListener{
             if(weekView){
@@ -52,7 +76,6 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
                 binding.weekViewArr.setImageResource(R.drawable.arrow_down_24)
             }
         }
-
         binding.prevArr.setOnClickListener{
             prevMonthAction()
         }
@@ -61,9 +84,19 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
         }
 
         setMonthView()
+        setDate(selectedWeekDay)
 
         return binding.root
     }
+
+    private fun setCalendarView(){
+        if(weekView){
+            setWeekView(selectedWeekDay)
+        }else{
+            setMonthView()
+        }
+    }
+
     private fun setMonthView() {
         binding.calendarText.text = monthYearFromDate(selectedDate)
         val daysInMonth: ArrayList<String> = daysInMonthArray(selectedDate)
@@ -74,7 +107,7 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
 
         binding.calendarView.apply {
             binding.calendarView.layoutManager = GridLayoutManager(context, 7)
-            adapter= CalendarAdapter(daysInMonth, activity, yearMonth, taskViewModel,selectedDay)
+            adapter= CalendarAdapter(daysInMonth, activity, yearMonth,selectedDay,taskList)
         }
     }
 
@@ -90,7 +123,7 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
 
         binding.calendarView.apply {
             binding.calendarView.layoutManager = GridLayoutManager(context, 7)
-            adapter= CalendarAdapter(daysInWeek, activity, yearMonth, taskViewModel,selectedDay)
+            adapter= CalendarAdapter(daysInWeek, activity, yearMonth,selectedDay,taskList)
         }
     }
 
@@ -158,6 +191,7 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
             setDate(LocalDate.now().dayOfMonth.toString())
         }
     }
+
     private fun nextMonthAction() {
         selectedDate = selectedDate.plusMonths(1)
         binding.weekViewArr.setImageResource(R.drawable.arrow_down_24)
@@ -196,10 +230,8 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
                 dateStr= "" + YearMonth.from(selectedDate) + "-" + date
             }
 
-            val itemList: List<TaskItem> = taskViewModel.liveTaskItems.value!!
-            val itemArray =  ArrayList<TaskItem>(itemList)
             var count : Int = 0
-            itemArray.forEach {
+            liveList().forEach {
                 if(it.dueDate == dateStr){
                     count++
                 }
@@ -216,32 +248,80 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
         }
     }
 
-    private fun setRecycleView(toString: String) {
+    private fun liveList() : ArrayList<TaskItem>{
+        val liveList = arrayListOf<TaskItem>()
+
+        taskList.forEach {
+            if(it.status != "done"){
+                liveList.add(it)
+            }
+        }
+
+        return liveList
+    }
+
+
+    private fun setRecycleView(date: String) {
         val activity = this
 
-        taskViewModel.taskItems.observe(viewLifecycleOwner){}
-
-        taskViewModel.searchTaskItemByDate(toString).observe(viewLifecycleOwner){
-            binding.listRecycleView.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = TaskItemAdapter(it, activity)
-            }
-            setMonthView()
+        binding.listRecycleView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = TaskItemAdapter(dateFilteredList(date), activity)
         }
     }
 
+    private fun dateFilteredList(date: String) : ArrayList<TaskItem>{
+        val filteredTaskList = arrayListOf<TaskItem>()
+
+        liveList().forEach {
+            if(it.dueDate.toString() == date){
+                filteredTaskList.add(it)
+            }
+        }
+
+        return filteredTaskList
+    }
+
     override fun editTaskItem(taskItem: TaskItem) {
-        NewTaskSheet(taskItem).show(childFragmentManager, "editTaskTag")
+        NewTaskSheet(taskItem,taskList).show(childFragmentManager, "editTaskTag")
     }
 
     override fun completeTaskItem(taskItem: TaskItem) {
-        taskViewModel.setTaskCompleted(taskItem)
+        if(taskItem.status == "live"){
+            taskItem.status = "completed"
+            taskItem.completedDateString = LocalDate.now().toString()
+        }else if(taskItem.status == "completed"){
+            taskItem.status = "live"
+            taskItem.completedDateString = "null"
+        }
+        updateItem(taskItem)
     }
 
     override fun deleteTaskItem(taskItem: TaskItem) {
-        taskViewModel.deleteTaskItem(taskItem)
-        setMonthView()
+        if(taskItem.status == "done" || taskItem.status == "live"){
+            databaseRef.child(taskItem.id.toString()).removeValue()
+        }else if (taskItem.status == "completed"){
+            taskItem.status = "done"
+            updateItem(taskItem)
+        }
+        if(taskItem.notificationId != null){
+            cancelScheduledNotification(taskItem.notificationId!!)
+        }
     }
 
+    private fun updateItem(taskItem: TaskItem) {
+        val map = HashMap<String, Any>()
+        map[taskItem.id.toString()] = taskItem
+        databaseRef.updateChildren(map)
+    }
 
+    private fun cancelScheduledNotification(id: Int) {
+        val intent = Intent(requireContext(), NotificationReceiver::class.java)
+
+        val pendingIntent = PendingIntent.getBroadcast(requireContext(), id,intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        alarmManager.cancel(pendingIntent)
+    }
 }

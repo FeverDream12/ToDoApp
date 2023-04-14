@@ -2,15 +2,21 @@
 
     <application>
         <activity
-            android:name="com.example.todoapp.StatisticActivity"
+            android:name="com.example.todoapp.utilities.StatisticActivity"
             android:exported="false"
             android:label="@string/title_activity_statistic"
             android:theme="@style/Theme.ToDoApp.NoActionBar" />
 
         <activity
-            android:name="com.example.todoapp.FavouriteNotesActivity"
+            android:name="com.example.todoapp.utilities.FavouriteNotesActivity"
             android:exported="false"
             android:label="FavouriteNotesActivity"
+            android:theme="@style/Theme.ToDoApp.NoActionBar" />
+
+        <activity
+            android:name="com.example.todoapp.utilities.AuthActivity"
+            android:exported="true"
+            android:label="ToDoApp"
             android:theme="@style/Theme.ToDoApp.NoActionBar" />
     </application>
 </manifest>

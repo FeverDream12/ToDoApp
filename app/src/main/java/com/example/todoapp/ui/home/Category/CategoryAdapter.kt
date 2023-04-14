@@ -5,14 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.databinding.CategoryViewItemBinding
-import com.example.todoapp.ui.home.TaskItem.TaskItem
-import com.example.todoapp.ui.home.TaskItem.TaskItemViewHolder
-import com.example.todoapp.ui.home.TaskItem.TaskViewModel
 
 class CategoryAdapter(
     private val categories : ArrayList<String>,
     private val clickListener: CategoryItemClickListener,
-    private val taskViewModel: TaskViewModel,
     private val selectedCategory: String) : RecyclerView.Adapter<CategoryViewHolder>(){
 
 

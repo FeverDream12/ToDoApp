@@ -30,7 +30,7 @@ class TaskItemViewHolder(
 
         popupMenu(taskItem)
 
-        if(taskItem.isCompleted()){
+        if(taskItem.status == "completed"){
             binding.name.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
             binding.dueTime.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
         }
@@ -55,7 +55,7 @@ class TaskItemViewHolder(
         binding.deleteButton.setColorFilter(taskItem.imageColor(context))
         binding.name.setTextColor(taskItem.imageColor(context))
 
-        if(taskItem.notificationId != null){
+        if(taskItem.notificationId != 0){
             binding.notif.visibility = ImageView.VISIBLE
         }else{
             binding.notif.visibility = ImageView.INVISIBLE
@@ -76,6 +76,7 @@ class TaskItemViewHolder(
 
         if(taskItem.dueTime() != null){
             binding.dueTime.text = timeFormat.format(taskItem.dueTime())
+            //binding.dueTime.text = taskItem.dueTimeString
         }else{
             binding.dueTime.text = ""
         }
@@ -84,7 +85,7 @@ class TaskItemViewHolder(
 
 
     fun lateCheck(taskItem: TaskItem) : Boolean{
-        if(taskItem.dueTimeString != null){
+        if(taskItem.dueTime() != null){
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
             return LocalDateTime.now().isAfter(LocalDateTime.parse(taskItem.dueDate + " " + taskItem.dueTimeString,formatter))
         }else{

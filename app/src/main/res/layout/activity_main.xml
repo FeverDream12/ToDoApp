@@ -19,23 +19,6 @@
         android:layout_height="match_parent"
         android:id="@+id/container">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/listRecycleView"
-            android:visibility="invisible"
-            android:backgroundTint="@color/design_default_color_background"
-            />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/notesRecycleView"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2"
-            android:visibility="invisible"
-            android:backgroundTint="@color/design_default_color_background"
-            />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -89,9 +72,6 @@
         app:headerLayout="@layout/side_header"
         app:menu="@menu/side_menu"
         android:background="?colorOnPrimary">
-
-
-
 
     </com.google.android.material.navigation.NavigationView>
 

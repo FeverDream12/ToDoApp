@@ -3,25 +3,43 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/homeFrag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.fragment.HomeFragment"
     android:backgroundTint="?colorOnPrimary"
     >
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/categoriesRecycleView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"/>
+        android:orientation="horizontal">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/categoriesRecycleView"
+            android:layout_width="370dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"/>
+
+        <ImageButton
+            android:id="@+id/menuDots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:backgroundTint="?colorOnPrimary"
+            android:src="@drawable/menu_dots_24"/>
+
+    </LinearLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="40dp"
+        android:layout_marginBottom="60dp"
         android:id="@+id/listRecycleView"
         />
 
