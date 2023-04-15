@@ -42,7 +42,7 @@ class StatisticActivity : AppCompatActivity(), TaskItemClickListener {
 
                 var doneCount: Int = 0
                 taskList?.forEach {
-                    if(it.status == "done"){
+                    if(it.status != "live"){
                         doneCount++
                     }
                 }
@@ -89,6 +89,6 @@ class StatisticActivity : AppCompatActivity(), TaskItemClickListener {
     }
 
     override fun deleteTaskItem(taskItem: TaskItem) {
-        //taskViewModel.deleteTaskItem(taskItem)
+        databaseRef.child(taskItem.id.toString()).removeValue()
     }
 }
