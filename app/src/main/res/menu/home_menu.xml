@@ -10,16 +10,60 @@
         <menu>
 
             <item
-                android:id="@+id/date_sort"
-                android:title="По дате"/>
+                android:id="@+id/id_sort"
+                android:title="Обычная"/>
 
-            <item
-                android:id="@+id/name_sort"
-                android:title="По названию"/>
+            <item android:title="По дате">
 
-            <item
-                android:id="@+id/priority_sort"
-                android:title="По приоритету"/>
+                <menu>
+
+                    <item
+                        android:id="@+id/date_sort_asc"
+                        android:title="По возрастанию"/>
+
+                    <item
+                        android:id="@+id/date_sort_desc"
+                        android:title="По убыванию"/>
+
+
+                </menu>
+
+            </item>
+
+
+            <item android:title="По названию">
+
+                <menu>
+
+                    <item
+                        android:id="@+id/name_sort_asc"
+                        android:title="По возрастанию"/>
+
+                    <item
+                        android:id="@+id/name_sort_desc"
+                        android:title="По убыванию"/>
+
+
+                </menu>
+
+            </item>
+
+            <item android:title="По приоритету">
+
+                <menu>
+
+                    <item
+                        android:id="@+id/priority_sort_asc"
+                        android:title="По возрастанию"/>
+
+                    <item
+                        android:id="@+id/priority_sort_desc"
+                        android:title="По убыванию"/>
+
+
+                </menu>
+
+            </item>
 
         </menu>
 

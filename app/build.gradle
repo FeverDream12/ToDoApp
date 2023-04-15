@@ -75,4 +75,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
     implementation "com.airbnb.android:lottie:3.4.0"
+    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
 }

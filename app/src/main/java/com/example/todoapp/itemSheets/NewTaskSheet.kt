@@ -161,18 +161,18 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>) :
         }
     }
 
-    private fun scheduleNotification(id: Int) {
+    private fun scheduleNotification(task: TaskItem) {
         val intent = Intent(requireContext(), NotificationReceiver::class.java)
-        val title = binding.name.text.toString()
-        val message = binding.desc.text.toString()
+        val title = task.name
+        val message = task.desc
 
         intent.putExtra(titleExtra,title)
         intent.putExtra(messageExtra,message)
 
-        val pendingIntent = PendingIntent.getBroadcast(requireContext(), id,intent,PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getBroadcast(requireContext(),task.notificationId!!,intent,PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val df = SimpleDateFormat("yyyy-MM-dd-HH:mm")
-        val timeStr : String = dueDate + "-" + dueTime?.toString()
+        val timeStr : String = task.dueDate + "-" + task.dueTimeString
         val time : Long = df.parse(timeStr).time
 
         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,time,pendingIntent)
@@ -233,7 +233,7 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>) :
 
                 if(gotNot){
                     newTask!!.notificationId = nextInt()
-                    scheduleNotification(newTask!!.notificationId!!)
+                    scheduleNotification(newTask)
                 }
 
                 val taskId = databaseRef.push().key!!
@@ -257,13 +257,13 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>) :
 
                 if(gotNot && taskItem!!.notificationId == 0) {
                     taskItem!!.notificationId = nextInt()
-                    scheduleNotification(taskItem!!.notificationId!!)
+                    scheduleNotification(taskItem!!)
                 }
 
                 if(gotNot && taskItem!!.notificationId != 0) {
                     cancelScheduledNotification(taskItem!!.notificationId!!)
                     taskItem!!.notificationId = nextInt()
-                    scheduleNotification(taskItem!!.notificationId!!)
+                    scheduleNotification(taskItem!!)
                 }
 
                 if(!gotNot && taskItem!!.notificationId != 0){

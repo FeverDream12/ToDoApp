@@ -1,5 +1,6 @@
 package com.example.todoapp.ui.home.fragment
 
+import com.example.todoapp.R
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
@@ -11,23 +12,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.*
-import com.example.todoapp.R
-import com.example.todoapp.ui.home.TaskItem.TaskItemClickListener
 import com.example.todoapp.databinding.FragmentHomeBinding
 import com.example.todoapp.itemSheets.NewTaskSheet
 import com.example.todoapp.ui.home.Category.CategoryAdapter
 import com.example.todoapp.ui.home.Category.CategoryItemClickListener
 import com.example.todoapp.ui.home.TaskItem.TaskItem
 import com.example.todoapp.ui.home.TaskItem.TaskItemAdapter
+import com.example.todoapp.ui.home.TaskItem.TaskItemClickListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+
 
 class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListener {
 
@@ -38,8 +42,9 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
     private lateinit var taskList: ArrayList<TaskItem>
     private lateinit var taskItemsAdapter: TaskItemAdapter
 
-
     private var selectedCategory = "Все"
+    private var sortKey = "id"
+    private var sortOrder = "asc"
     private lateinit var categories : ArrayList<String>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -48,9 +53,13 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
         databaseRef = FirebaseDatabase.getInstance().reference.child("TaskItems").child(auth.currentUser?.uid.toString())
         taskList = arrayListOf<TaskItem>()
         taskItemsAdapter = TaskItemAdapter(taskList,this)
-        popupMenu()
 
-        val activity = this
+        binding.newTaskButton.setOnClickListener{
+            NewTaskSheet(null,taskList).show(childFragmentManager, "newTaskTag")
+        }
+
+        deleteSwipe()
+        popupMenu()
 
         databaseRef.addValueEventListener(object :ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -62,6 +71,10 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
                         taskList.add(task!!)
                     }
                 }
+                Toast.makeText(context, sortKey, Toast.LENGTH_SHORT).show()
+                if(sortOrder == "desc"){
+                    taskList = taskList.reversed() as ArrayList<TaskItem>
+                }
                 setCategoriesList()
                 setCategory(selectedCategory)
                 setRecycleView()
@@ -71,19 +84,47 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
             }
         })
 
-        binding.newTaskButton.setOnClickListener{
-            NewTaskSheet(null,taskList).show(childFragmentManager, "newTaskTag")
+        return binding.root
+    }
+
+    private fun getSortedData(){
+
+        var query: Query
+
+        if(sortKey == "id"){
+            query = databaseRef.orderByKey()
+        }else{
+            query = databaseRef.orderByChild(sortKey)
         }
 
-        deleteSwipe()
-
-        return binding.root
+        query.addValueEventListener(object :ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                taskList.clear()
+                if(snapshot.exists()){
+                    snapshot.children.map{
+                        val task : TaskItem? = it.getValue(TaskItem::class.java)
+                        task!!.id = it.key
+                        taskList.add(task!!)
+                    }
+                }
+                Toast.makeText(context, sortKey, Toast.LENGTH_SHORT).show()
+                if(sortOrder == "desc"){
+                    taskList = taskList.reversed() as ArrayList<TaskItem>
+                }
+                setCategoriesList()
+                setCategory(selectedCategory)
+                setRecycleView()
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun deleteSwipe(){
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
-            ItemTouchHelper.LEFT or ItemTouchHelper.LEFT,
-            ItemTouchHelper.LEFT or ItemTouchHelper.LEFT
+            0,
+            ItemTouchHelper.LEFT
         ){
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -114,8 +155,18 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
                             Snackbar.LENGTH_SHORT
                         ).apply {
                             setAction("Отмена"){
-                                val taskId = databaseRef.push().key!!
-                                databaseRef.child(taskId).setValue(item)
+
+                                if(item.status == "done"){
+                                    item.status = "completed"
+                                    updateItem(item)
+                                }else{
+                                    val taskId = databaseRef.push().key!!
+                                    databaseRef.child(taskId).setValue(item)
+                                }
+
+                                if(item.notificationId != 0){
+                                    scheduleNotification(item)
+                                }
                             }
                             show()
                         }
@@ -129,10 +180,29 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
 
             override fun onChildDraw(c: Canvas,recyclerView: RecyclerView,viewHolder: RecyclerView.ViewHolder,dX: Float,dY: Float,actionState: Int,isCurrentlyActive: Boolean) {
 
+                RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addSwipeLeftActionIcon(R.drawable.delete_24)
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(requireContext(),R.color.red2))
+                    .create()
+                    .decorate()
+
                 super.onChildDraw(c,recyclerView,viewHolder,dX,dY,actionState,isCurrentlyActive)
 
             }
         }).attachToRecyclerView(binding.listRecycleView)
+    }
+
+    private fun refreshList(){
+        if(taskList.size != 0){
+            var item = taskList[0]
+            val name = item.name
+
+            item.name ="a"
+            updateItem(item)
+
+            item.name = name
+            updateItem(item)
+        }
     }
 
     private fun popupMenu() {
@@ -141,24 +211,44 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
 
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId){
+                R.id.id_sort ->{
+                    taskList = taskList.sortedBy { it.id} as ArrayList<TaskItem>
+                    refreshList()
+//                    sortKey = "id"
+//                    sortOrder = "asc"
+//                    getSortedData()
+                    true
+                }
+                R.id.date_sort_asc ->{
+//                    sortKey = "dueDate"
+//                    sortOrder = "asc"
+//                    getSortedData()
+                    true
+                }
+                R.id.date_sort_desc ->{
+                    sortKey = "dueDate"
+                    sortOrder = "desc"
+                    getSortedData()
+                    true
+                }
+                R.id.name_sort_asc ->{
+                    sortKey = "name"
+                    sortOrder = "asc"
+                    getSortedData()
+                    true
+                }
+                R.id.name_sort_desc ->{
+                    sortKey = "name"
+                    sortOrder = "desc"
+                    getSortedData()
+                    true
+                }
                 R.id.hideCompleteTasks ->{
-                    //clickListener.deleteNoteItem(noteItem)
-                    true
-                }
-                R.id.date_sort ->{
-                    //clickListener.deleteNoteItem(noteItem)
-                    true
-                }
-                R.id.name_sort ->{
-                    //clickListener.deleteNoteItem(noteItem)
-                    true
-                }
-                R.id.priority_sort ->{
-                    //clickListener.deleteNoteItem(noteItem)
-                    true
-                }
-                R.id.searchTasks ->{
-                    // clickListener.deleteNoteItem(noteItem)
+                    liveList().forEach {
+                        if(it.status == "completed"){
+                            deleteTaskItem(it)
+                        }
+                    }
                     true
                 }
                 else -> {
@@ -210,6 +300,23 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
             binding.categoriesRecycleView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,false)
             adapter= CategoryAdapter(categories,activity,selectedCategory)
         }
+    }
+
+    private fun scheduleNotification(task: TaskItem) {
+        val intent = Intent(requireContext(), NotificationReceiver::class.java)
+        val title = task.name
+        val message = task.desc
+
+        intent.putExtra(titleExtra,title)
+        intent.putExtra(messageExtra,message)
+
+        val pendingIntent = PendingIntent.getBroadcast(requireContext(),task.notificationId!!,intent,PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val df = SimpleDateFormat("yyyy-MM-dd-HH:mm")
+        val timeStr : String = task.dueDate + "-" + task.dueTimeString
+        val time : Long = df.parse(timeStr).time
+
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,time,pendingIntent)
     }
 
     private fun cancelScheduledNotification(id: Int) {
@@ -284,7 +391,7 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
             taskItem.status = "done"
             updateItem(taskItem)
         }
-        if(taskItem.notificationId != null){
+        if(taskItem.notificationId != 0){
             cancelScheduledNotification(taskItem.notificationId!!)
         }
     }

@@ -2,9 +2,6 @@ package com.example.todoapp.ui.home.TaskItem
 
 import android.content.Context
 import androidx.core.content.ContextCompat
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.example.todoapp.R
 import java.time.LocalDate
 import java.time.LocalTime

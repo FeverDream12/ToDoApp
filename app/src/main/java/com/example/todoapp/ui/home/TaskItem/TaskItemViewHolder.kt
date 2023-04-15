@@ -3,6 +3,7 @@ package com.example.todoapp.ui.home.TaskItem
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Paint
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -52,7 +53,6 @@ class TaskItemViewHolder(
 
         binding.completeButton.setImageResource(taskItem.imageResource())
         binding.completeButton.setColorFilter(taskItem.imageColor(context))
-        binding.deleteButton.setColorFilter(taskItem.imageColor(context))
         binding.name.setTextColor(taskItem.imageColor(context))
 
         if(taskItem.notificationId != 0){
@@ -66,9 +66,9 @@ class TaskItemViewHolder(
             clickListener.completeTaskItem(taskItem)
         }
 
-        binding.deleteButton.setOnClickListener{
-            clickListener.deleteTaskItem(taskItem)
-        }
+//        binding.deleteButton.setOnClickListener{
+//            clickListener.deleteTaskItem(taskItem)
+//        }
 
         binding.taskCellContainer.setOnClickListener{
             clickListener.editTaskItem(taskItem)
