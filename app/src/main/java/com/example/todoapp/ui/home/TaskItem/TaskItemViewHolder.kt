@@ -39,15 +39,17 @@ class TaskItemViewHolder(
         if(lateCheck(taskItem) && taskItem.status == "live"){
             binding.lateDate.text = "Опиздун! " + taskItem.dueDate
             binding.date.text = ""
-        }else{
+        }else if (!lateCheck(taskItem) && taskItem.status == "live"){
             binding.date.text = taskItem.dueDate
             binding.lateDate.text = ""
+        }else if(taskItem.status == "done"){
+            binding.date.text = "Задача выполнена " + taskItem.completedDateString
         }
 
-        if(LocalDate.parse(taskItem.dueDate) == LocalDate.now() && !lateCheck(taskItem)){
+        if(LocalDate.parse(taskItem.dueDate) == LocalDate.now() && !lateCheck(taskItem) && taskItem.status != "done"){
             binding.date.text = "Сегодня"
         }
-        if(LocalDate.parse(taskItem.dueDate) == LocalDate.now().plusDays(1) && !lateCheck(taskItem)){
+        if(LocalDate.parse(taskItem.dueDate) == LocalDate.now().plusDays(1) && !lateCheck(taskItem) && taskItem.status != "done"){
             binding.date.text = "Завтра"
         }
 
@@ -65,10 +67,6 @@ class TaskItemViewHolder(
         binding.completeButton.setOnClickListener{
             clickListener.completeTaskItem(taskItem)
         }
-
-//        binding.deleteButton.setOnClickListener{
-//            clickListener.deleteTaskItem(taskItem)
-//        }
 
         binding.taskCellContainer.setOnClickListener{
             clickListener.editTaskItem(taskItem)

@@ -40,7 +40,6 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
     private lateinit var databaseRef: DatabaseReference
     private lateinit var auth: FirebaseAuth
     private lateinit var taskList: ArrayList<TaskItem>
-    private lateinit var taskItemsAdapter: TaskItemAdapter
 
     private var selectedCategory = "Все"
     private var sortKey = "id"
@@ -52,7 +51,6 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
         auth = FirebaseAuth.getInstance()
         databaseRef = FirebaseDatabase.getInstance().reference.child("TaskItems").child(auth.currentUser?.uid.toString())
         taskList = arrayListOf<TaskItem>()
-        taskItemsAdapter = TaskItemAdapter(taskList,this)
 
         binding.newTaskButton.setOnClickListener{
             NewTaskSheet(null,taskList).show(childFragmentManager, "newTaskTag")

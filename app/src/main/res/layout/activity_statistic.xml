@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".utilities.StatisticActivity">
+    tools:context=".utilities.StatisticActivity"
+    android:background="?colorOnPrimary">
 
 
     <androidx.appcompat.widget.Toolbar
@@ -61,23 +62,71 @@
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"/>
 
-        <TextView
-            android:id="@+id/allTaskState"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Всего поставленно задач: "
-            android:textSize="15sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="20dp"/>
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/statTitle">
 
-        <TextView
-            android:id="@+id/doneTaskState"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Всего выполненно задач:"
-            android:textSize="15sp"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="20dp"/>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/allCard"
+                android:layout_width="180dp"
+                app:cardBackgroundColor="?colorSecondary"
+                android:layout_height="100dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                app:cardCornerRadius="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Задач поставлено"
+                    android:layout_marginTop="70dp"
+                    android:layout_gravity="center_horizontal"/>
+
+                <TextView
+                    android:id="@+id/tasksCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20"
+                    android:textStyle="bold"
+                    android:textSize="30dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_gravity="center_horizontal"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="180dp"
+                app:cardBackgroundColor="?colorSecondary"
+                android:layout_height="100dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                app:cardCornerRadius="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Задач выполнено"
+                    android:layout_marginTop="70dp"
+                    android:layout_gravity="center_horizontal"/>
+
+                <TextView
+                    android:id="@+id/tasksDoneCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20"
+                    android:textStyle="bold"
+                    android:textSize="30dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_gravity="center_horizontal"/>
+
+            </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/doneTaskTitle"
@@ -85,7 +134,7 @@
             android:layout_height="wrap_content"
             android:text="Выполненные задачи:"
             android:textSize="15sp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="15dp"
             android:layout_marginStart="20dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
