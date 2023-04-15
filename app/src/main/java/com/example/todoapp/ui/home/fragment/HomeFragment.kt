@@ -71,9 +71,19 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
                         taskList.add(task!!)
                     }
                 }
-                Toast.makeText(context, sortKey, Toast.LENGTH_SHORT).show()
+                when(sortKey){
+                    "id" ->{
+                        taskList.sortBy { it.id}
+                    }
+                    "name" ->{
+                        taskList.sortBy { it.name}
+                    }
+                    "dueDate" ->{
+                        taskList.sortBy { it.dueDate}
+                    }
+                }
                 if(sortOrder == "desc"){
-                    taskList = taskList.reversed() as ArrayList<TaskItem>
+                    taskList.reverse()
                 }
                 setCategoriesList()
                 setCategory(selectedCategory)
@@ -85,40 +95,6 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
         })
 
         return binding.root
-    }
-
-    private fun getSortedData(){
-
-        var query: Query
-
-        if(sortKey == "id"){
-            query = databaseRef.orderByKey()
-        }else{
-            query = databaseRef.orderByChild(sortKey)
-        }
-
-        query.addValueEventListener(object :ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                taskList.clear()
-                if(snapshot.exists()){
-                    snapshot.children.map{
-                        val task : TaskItem? = it.getValue(TaskItem::class.java)
-                        task!!.id = it.key
-                        taskList.add(task!!)
-                    }
-                }
-                Toast.makeText(context, sortKey, Toast.LENGTH_SHORT).show()
-                if(sortOrder == "desc"){
-                    taskList = taskList.reversed() as ArrayList<TaskItem>
-                }
-                setCategoriesList()
-                setCategory(selectedCategory)
-                setRecycleView()
-            }
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 
     private fun deleteSwipe(){
@@ -212,35 +188,33 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.id_sort ->{
-                    taskList = taskList.sortedBy { it.id} as ArrayList<TaskItem>
+                    sortKey = "id"
+                    sortOrder = "asc"
                     refreshList()
-//                    sortKey = "id"
-//                    sortOrder = "asc"
-//                    getSortedData()
                     true
                 }
                 R.id.date_sort_asc ->{
-//                    sortKey = "dueDate"
-//                    sortOrder = "asc"
-//                    getSortedData()
+                    sortKey = "dueDate"
+                    sortOrder = "asc"
+                    refreshList()
                     true
                 }
                 R.id.date_sort_desc ->{
                     sortKey = "dueDate"
                     sortOrder = "desc"
-                    getSortedData()
+                    refreshList()
                     true
                 }
                 R.id.name_sort_asc ->{
                     sortKey = "name"
                     sortOrder = "asc"
-                    getSortedData()
+                    refreshList()
                     true
                 }
                 R.id.name_sort_desc ->{
                     sortKey = "name"
                     sortOrder = "desc"
-                    getSortedData()
+                    refreshList()
                     true
                 }
                 R.id.hideCompleteTasks ->{
