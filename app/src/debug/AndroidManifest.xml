@@ -14,6 +14,12 @@
             android:theme="@style/Theme.ToDoApp.NoActionBar" />
 
         <activity
+            android:name="com.example.todoapp.utilities.FavouriteTasksActivity"
+            android:exported="false"
+            android:label="FavouriteNotesActivity"
+            android:theme="@style/Theme.ToDoApp.NoActionBar" />
+
+        <activity
             android:name="com.example.todoapp.utilities.AuthActivity"
             android:exported="true"
             android:label="ToDoApp"

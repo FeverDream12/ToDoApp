@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".utilities.FavouriteNotesActivity"
+    tools:context=".utilities.FavouriteTasksActivity"
     android:background="?colorOnPrimary">
 
     <androidx.appcompat.widget.Toolbar
@@ -38,7 +38,7 @@
                 android:gravity="center"
                 android:textSize="18dp"
                 style="@style/TextAppearance.AppCompat.Title"
-                android:text="Избранные заметки"/>
+                android:text="Избранные задачи"/>
 
         </RelativeLayout>
 
@@ -56,7 +56,7 @@
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ваши избранные заметки:"
+            android:text="Ваши избранные задачи:"
             android:textColor="?colorSecondaryVariant"
             android:textSize="25sp"
             android:layout_marginTop="20dp"
@@ -67,7 +67,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/favNotesRecycleView"
+            android:id="@+id/favTasksRecycleView"
             android:layout_marginTop="5dp"
             android:layout_marginStart="5dp"
             android:backgroundTint="@color/design_default_color_background"

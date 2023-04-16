@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity(){
                     startActivity(int)
                 }
                 R.id.fav_tasks -> {
-                val int = Intent(this, FavouriteNotesActivity::class.java)
+                val int = Intent(this, FavouriteTasksActivity::class.java)
                     startActivity(int)
                 }
                 R.id.fav_notes -> {

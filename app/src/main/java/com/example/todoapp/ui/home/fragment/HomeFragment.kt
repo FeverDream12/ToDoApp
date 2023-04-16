@@ -170,7 +170,7 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
 
                     }
                     ItemTouchHelper.RIGHT ->{
-
+                        setTaskFavorite(item)
                     }
                 }
             }
@@ -423,6 +423,15 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
         if(taskItem.notificationId != 0){
             cancelScheduledNotification(taskItem.notificationId!!)
         }
+    }
+
+    override fun setTaskFavorite(taskItem: TaskItem) {
+        if(taskItem.isFavourite == "false"){
+            taskItem.isFavourite = "true"
+        }else{
+            taskItem.isFavourite = "false"
+        }
+        updateItem(taskItem)
     }
 
     private fun updateItem(taskItem: TaskItem) {

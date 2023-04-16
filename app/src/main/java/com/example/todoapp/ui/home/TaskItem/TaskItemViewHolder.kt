@@ -36,6 +36,10 @@ class TaskItemViewHolder(
             binding.dueTime.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
         }
 
+        if(taskItem.isFavourite == "true"){
+            binding.favBtn.visibility = ImageButton.VISIBLE
+        }
+
         if(lateCheck(taskItem) && taskItem.status == "live"){
             binding.lateDate.text = "Опиздун! " + taskItem.dueDate
             binding.date.text = ""
