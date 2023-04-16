@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".utilities.FavouriteTasksActivity"
-    android:background="?colorOnPrimary">
+    android:background="?colorOnPrimary"
+    android:id="@+id/favTasksActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar2"
