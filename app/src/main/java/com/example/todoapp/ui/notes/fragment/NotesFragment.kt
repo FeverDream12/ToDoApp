@@ -13,6 +13,7 @@ import com.example.todoapp.ui.notes.NoteItem.NoteItemClickListener
 import com.example.todoapp.ui.notes.NoteItem.NoteItem
 import com.example.todoapp.databinding.FragmentNotesBinding
 import com.example.todoapp.itemSheets.NewNoteSheet
+import com.example.todoapp.ui.home.TaskItem.TaskItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
@@ -63,10 +64,10 @@ class NotesFragment : Fragment(), NoteItemClickListener {
             override fun onQueryTextChange(newText: String?): Boolean {
 
                 if(newText != null){
-                    if(newText!= ""){
-                        //setFilteredNotesRecycleView(newText)
+                    if(newText != ""){
+                        setFilteredNotesRecycleView(newText)
                     }else{
-                        //setNotesRecycleView()
+                        setNotesRecycleView()
                     }
                 }
                 return true
@@ -88,19 +89,30 @@ class NotesFragment : Fragment(), NoteItemClickListener {
         }
     }
 
-//    private fun setFilteredNotesRecycleView(string: String) {
-//        val activity = this
-//
-//        noteViewModel.searchNoteItem(string).observe(viewLifecycleOwner){
-//            binding.NotesRecycleView.apply {
-//                binding.NotesRecycleView.setHasFixedSize(true)
-//                binding.NotesRecycleView.layoutManager = StaggeredGridLayoutManager(2,LinearLayout.VERTICAL)
-//                layoutManager = LinearLayoutManager(context)
-//                adapter= NoteItemAdapter(it, activity)
-//            }
-//        }
-//
-//    }
+    private fun setFilteredNotesRecycleView(string: String) {
+        val activity = this
+
+        binding.NotesRecycleView.apply {
+            binding.NotesRecycleView.setHasFixedSize(true)
+            binding.NotesRecycleView.layoutManager = StaggeredGridLayoutManager(2,LinearLayout.VERTICAL)
+            layoutManager = LinearLayoutManager(context)
+            layoutManager = StaggeredGridLayoutManager(2,LinearLayout.VERTICAL)
+            adapter= NoteItemAdapter(filteredNotesList(string), activity)
+        }
+
+    }
+
+    private fun filteredNotesList(string: String): ArrayList<NoteItem> {
+        val filteredNotesList = arrayListOf<NoteItem>()
+
+        notesList.forEach {
+            if(it.note!!.lowercase().contains(string.lowercase()) || it.title!!.lowercase().contains(string.lowercase())){
+                filteredNotesList.add(it)
+            }
+        }
+
+        return filteredNotesList
+    }
 
     override fun editNoteItem(noteItem: NoteItem) {
         NewNoteSheet(noteItem).show(childFragmentManager, "editTaskTag")

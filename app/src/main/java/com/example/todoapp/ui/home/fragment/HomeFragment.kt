@@ -11,7 +11,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.SearchView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -42,6 +44,7 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
     private lateinit var taskList: ArrayList<TaskItem>
 
     private var selectedCategory = "Все"
+    private var searchQuery = ""
     private var sortKey = "id"
     private var sortOrder = "asc"
     private lateinit var categories : ArrayList<String>
@@ -85,10 +88,30 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
                 }
                 setCategoriesList()
                 setCategory(selectedCategory)
-                setRecycleView()
+                setRecycleView(searchQuery)
             }
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+
+        binding.tasksSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+
+                if(newText != null){
+                    searchQuery = newText
+                    if(newText != ""){
+                        setRecycleView(newText)
+                    }else{
+                        setRecycleView("")
+                    }
+                }
+                return true
             }
         })
 
@@ -98,7 +121,7 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
     private fun deleteSwipe(){
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             0,
-            ItemTouchHelper.LEFT
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
         ){
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -114,9 +137,9 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
                 var item: TaskItem
 
                 if (selectedCategory == "Все"){
-                    item = liveList()[position]
+                    item = liveList(searchQuery)[position]
                 }else{
-                    item = filteredList(selectedCategory)[position]
+                    item = filteredList(selectedCategory,searchQuery)[position]
                 }
 
                 when (direction){
@@ -157,6 +180,10 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
                 RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                     .addSwipeLeftActionIcon(R.drawable.delete_24)
                     .addSwipeLeftBackgroundColor(ContextCompat.getColor(requireContext(),R.color.red2))
+                    .addSwipeLeftCornerRadius(1, 15F)
+                    .addSwipeRightActionIcon(R.drawable.baseline_star_30)
+                    .addSwipeRightBackgroundColor(ContextCompat.getColor(requireContext(),R.color.fav))
+                    .addSwipeRightCornerRadius(1, 15F)
                     .create()
                     .decorate()
 
@@ -185,6 +212,17 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
 
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId){
+                R.id.searchTasks ->{
+                    if(binding.tasksSearchCard.visibility == CardView.VISIBLE){
+                        binding.tasksSearchCard.visibility = CardView.GONE
+                        binding.tasksSearchView.setQuery("",false)
+                        searchQuery = ""
+                    }else{
+                        binding.tasksSearchCard.visibility = CardView.VISIBLE
+                    }
+                    setCategory("Все")
+                    true
+                }
                 R.id.id_sort ->{
                     sortKey = "id"
                     sortOrder = "asc"
@@ -216,7 +254,7 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
                     true
                 }
                 R.id.hideCompleteTasks ->{
-                    liveList().forEach {
+                    liveList(searchQuery).forEach {
                         if(it.status == "completed"){
                             deleteTaskItem(it)
                         }
@@ -301,35 +339,45 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
         alarmManager.cancel(pendingIntent)
     }
 
-    private fun setRecycleView() {
+    private fun setRecycleView(searchQuery: String) {
         val activity = this
 
         if(selectedCategory == "Все"){
             binding.listRecycleView.apply {
                 layoutManager = LinearLayoutManager(context)
-                adapter = TaskItemAdapter(liveList(), activity)
+                adapter = TaskItemAdapter(liveList(searchQuery), activity)
             }
         }else{
             binding.listRecycleView.apply {
                 layoutManager = LinearLayoutManager(context)
-                adapter = TaskItemAdapter(filteredList(selectedCategory), activity)
+                adapter = TaskItemAdapter(filteredList(selectedCategory,searchQuery), activity)
             }
         }
     }
-
-    private fun liveList() : ArrayList<TaskItem>{
-        val filteredTaskList = arrayListOf<TaskItem>()
+    private fun liveList(searchQuery: String) : ArrayList<TaskItem>{
+        val liveList = arrayListOf<TaskItem>()
+        val liveSearchList = arrayListOf<TaskItem>()
 
         taskList.forEach {
             if(it.status != "done"){
-                filteredTaskList.add(it)
+                liveList.add(it)
             }
         }
 
-        return filteredTaskList
+        if (searchQuery != ""){
+            liveList.forEach{
+                if (it.name!!.lowercase().contains(searchQuery.lowercase()) || it.desc!!.lowercase().contains(searchQuery.lowercase())){
+                    liveSearchList.add(it)
+                }
+            }
+            return liveSearchList
+        }else{
+            return liveList
+        }
     }
-    private fun filteredList(selectedCategory: String) : ArrayList<TaskItem>{
+    private fun filteredList(selectedCategory: String,searchQuery: String) : ArrayList<TaskItem>{
         val filteredTaskList = arrayListOf<TaskItem>()
+        val filteredSearchList = arrayListOf<TaskItem>()
 
         taskList.forEach {
             if(it.category == selectedCategory && it.status != "done"){
@@ -337,7 +385,16 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
             }
         }
 
-        return filteredTaskList
+        if (searchQuery != ""){
+            filteredTaskList.forEach{
+                if (it.name!!.lowercase().contains(searchQuery.lowercase()) || it.desc!!.lowercase().contains(searchQuery.lowercase())){
+                    filteredSearchList.add(it)
+                }
+            }
+            return filteredSearchList
+        }else{
+            return filteredTaskList
+        }
     }
 
     override fun editTaskItem(taskItem: TaskItem) {
@@ -353,7 +410,7 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
             taskItem.completedDateString = "null"
         }
         updateItem(taskItem)
-        setRecycleView()
+        setRecycleView(searchQuery)
     }
 
     override fun deleteTaskItem(taskItem: TaskItem) {
@@ -377,6 +434,6 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
     override fun setCategory(category: String) {
         selectedCategory = category
         setCategoriesView(categories)
-        setRecycleView()
+        setRecycleView(searchQuery)
     }
 }

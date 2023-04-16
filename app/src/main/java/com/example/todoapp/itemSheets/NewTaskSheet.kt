@@ -35,7 +35,7 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>) :
 
     private lateinit var binding: FragmentNewTaskSheetBinding
     private var dueTime: LocalTime? = null
-    private var dueDate: String = "null"
+    private var dueDate: String = LocalDate.now().toString()
     private var gotNot: Boolean = false
     private var taskCat = "Без категории"
     private var otherCat = true
@@ -68,9 +68,7 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>) :
 
         categories.add("Другое")
 
-
         val adapter = ArrayAdapter(requireContext(), R.layout.categorylist_item, categories)
-
 
         if(taskItem != null){
             taskCat = taskItem!!.category!!
@@ -225,10 +223,10 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>) :
             {
                 val newTask : TaskItem
                 if(dueDate == "null"){
-                    newTask = TaskItem(name,desc,dueTimeString,"null", LocalDate.now().toString(),"live",0,taskCat)
+                    newTask = TaskItem(name,desc,dueTimeString,"null", LocalDate.now().toString(),"live",0,taskCat,"false")
                 }
                 else{
-                    newTask = TaskItem(name,desc,dueTimeString,"null", dueDate,"live",0,taskCat)
+                    newTask = TaskItem(name,desc,dueTimeString,"null", dueDate,"live",0,taskCat,"false")
                 }
 
                 if(gotNot){

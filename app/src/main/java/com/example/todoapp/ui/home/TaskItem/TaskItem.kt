@@ -17,6 +17,7 @@ class TaskItem(
     var status: String?= "null",
     var notificationId: Int? = 0,
     var category: String? = "null",
+    var isFavourite: String? = "false",
     var id: String? = "null"
 ){
     fun dueTime(): LocalTime? = if(dueTimeString == "null") null
