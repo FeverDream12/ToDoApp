@@ -39,6 +39,7 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>) :
     private var gotNot: Boolean = false
     private var taskCat = "Без категории"
     private var otherCat = true
+    private var priorityStr = "Обычный"
 
     private lateinit var auth: FirebaseAuth
     private lateinit var databaseRef: DatabaseReference
@@ -50,6 +51,8 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>) :
         val activity = requireActivity()
 
         val categories = ArrayList<String>()
+        val priorityList = ArrayList<String>()
+
         auth = FirebaseAuth.getInstance()
         databaseRef = FirebaseDatabase.getInstance().reference.child("TaskItems").child(auth.currentUser?.uid.toString())
 
@@ -57,6 +60,10 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>) :
         categories.add("Работа")
         categories.add("Учеба")
         categories.add("Личное")
+
+        priorityList.add("Обычный")
+        priorityList.add("Средний")
+        priorityList.add("Высокий")
 
         taskList.forEach {
             if(categories.contains(it.category.toString())){
@@ -68,16 +75,24 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>) :
 
         categories.add("Другое")
 
-        val adapter = ArrayAdapter(requireContext(), R.layout.categorylist_item, categories)
 
         if(taskItem != null){
+            priorityStr = getPriority(taskItem!!.priority.toString())
+            binding.priorityMenu.setText(priorityStr)
+
             taskCat = taskItem!!.category!!
             binding.categoryMenu.setText(taskCat)
         }else{
+            binding.priorityMenu.setText("Обычный")
             binding.categoryMenu.setText("Без категории")
         }
 
-        binding.categoryMenu.setAdapter(adapter)
+
+        val categoryAdapter = ArrayAdapter(requireContext(), R.layout.categorylist_item, categories)
+        binding.categoryMenu.setAdapter(categoryAdapter)
+
+        val priorityAdapter = ArrayAdapter(requireContext(), R.layout.prioritylist_item, priorityList)
+        binding.priorityMenu.setAdapter(priorityAdapter)
 
         binding.categoryMenu.onItemClickListener = AdapterView.OnItemClickListener{
             adapterView, view, i, l ->
@@ -91,6 +106,11 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>) :
                 otherCat = false
                 binding.myCategory.visibility = TextInputEditText.GONE
             }
+        }
+
+        binding.priorityMenu.onItemClickListener = AdapterView.OnItemClickListener{
+                adapterView, view, i, l ->
+            priorityStr = adapterView.getItemAtPosition(i).toString()
         }
 
 
@@ -159,6 +179,20 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>) :
         }
     }
 
+    private fun getPriority(priority: String): String {
+        var priorityStr = ""
+        when(priority){
+            "0" -> priorityStr = "Обычный"
+            "1" -> priorityStr = "Средний"
+            "2" -> priorityStr = "Высокий"
+            "Обычный" -> priorityStr = "0"
+            "Средний" -> priorityStr = "1"
+            "Высокий" -> priorityStr = "2"
+        }
+
+        return  priorityStr
+    }
+
     private fun scheduleNotification(task: TaskItem) {
         val intent = Intent(requireContext(), NotificationReceiver::class.java)
         val title = task.name
@@ -223,10 +257,10 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>) :
             {
                 val newTask : TaskItem
                 if(dueDate == "null"){
-                    newTask = TaskItem(name,desc,dueTimeString,"null", LocalDate.now().toString(),"live",0,taskCat,"false")
+                    newTask = TaskItem(name,desc,dueTimeString,"null", LocalDate.now().toString(),"live",0,taskCat,getPriority(priorityStr),"false")
                 }
                 else{
-                    newTask = TaskItem(name,desc,dueTimeString,"null", dueDate,"live",0,taskCat,"false")
+                    newTask = TaskItem(name,desc,dueTimeString,"null", dueDate,"live",0,taskCat,getPriority(priorityStr),"false")
                 }
 
                 if(gotNot){
@@ -243,6 +277,7 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>) :
                 taskItem!!.name = name
                 taskItem!!.desc = desc
                 taskItem!!.category = taskCat
+                taskItem!!.priority = getPriority(priorityStr)
 
                 taskItem!!.dueTimeString = dueTimeString
 

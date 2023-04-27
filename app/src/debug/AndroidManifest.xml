@@ -24,5 +24,11 @@
             android:exported="true"
             android:label="ToDoApp"
             android:theme="@style/Theme.ToDoApp.NoActionBar" />
+
+        <activity
+            android:name="com.example.todoapp.repeatedTasks.RepeatedTasksActivity"
+            android:exported="true"
+            android:label="ToDoApp"
+            android:theme="@style/Theme.ToDoApp.NoActionBar" />
     </application>
 </manifest>

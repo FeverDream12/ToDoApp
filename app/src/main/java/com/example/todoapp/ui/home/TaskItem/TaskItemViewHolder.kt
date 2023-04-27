@@ -2,6 +2,7 @@ package com.example.todoapp.ui.home.TaskItem
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.Paint
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -98,12 +99,20 @@ class TaskItemViewHolder(
 
     private fun popupMenu(taskItem: TaskItem) {
         val popupMenu = PopupMenu(context,binding.taskCellContainer)
-        popupMenu.inflate(R.menu.pop_up_menu)
+        popupMenu.inflate(R.menu.pop_up_task_menu)
 
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId){
-                R.id.delete_note ->{
-                    clickListener.deleteTaskItem(taskItem)
+                R.id.share_task ->{
+                    val share = Intent(Intent.ACTION_SEND)
+                    share.type = "text/plane"
+                    //share.setPackage("com.todoapp")
+                    share.putExtra(Intent.EXTRA_TEXT,"Делюсь своей поставлленной задачей \"" + taskItem.name + "\"\n" + taskItem.desc + "\nВыполнить до: " + taskItem.dueDate)
+                    val chooser = Intent.createChooser(share,"Поделиться через...")
+
+                    context.startActivity(chooser)
+
+                        //clickListener.deleteTaskItem(taskItem)
                     true
                 }
                 else -> {

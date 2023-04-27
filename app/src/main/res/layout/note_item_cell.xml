@@ -6,7 +6,7 @@
     android:layout_margin="9dp"
     android:background="?colorSecondary"
     app:cardCornerRadius="12dp"
-    android:elevation="8dp"
+    android:elevation="1dp"
     android:id="@+id/notesCard">
     
     <LinearLayout

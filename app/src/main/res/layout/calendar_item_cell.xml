@@ -4,6 +4,7 @@
     android:layout_width="53dp"
     android:layout_height="53dp"
     app:cardCornerRadius="8dp"
+    app:cardElevation="1dp"
     android:layout_margin="4dp"
     android:id="@+id/calendarItem"
     app:cardBackgroundColor="?colorSecondary"

@@ -15,6 +15,9 @@
         android:theme="@style/Theme.ToDoApp"
         tools:targetApi="31">
         <activity
+            android:name=".RepeatedTasksActivity"
+            android:exported="false" />
+        <activity
             android:name=".utilities.FavouriteTasksActivity"
             android:exported="false" />
         <activity
@@ -40,7 +43,7 @@
         <activity
             android:name=".utilities.MainActivity"
             android:exported="false"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name" />
     </application>
 
 </manifest>

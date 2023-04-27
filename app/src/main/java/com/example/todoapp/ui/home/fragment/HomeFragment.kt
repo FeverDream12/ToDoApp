@@ -62,6 +62,9 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
         deleteSwipe()
         popupMenu()
 
+        setCategoriesList()
+        setCategory(selectedCategory)
+
         databaseRef.addValueEventListener(object :ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 taskList.clear()

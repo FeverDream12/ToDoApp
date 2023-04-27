@@ -17,6 +17,7 @@ class TaskItem(
     var status: String?= "null",
     var notificationId: Int? = 0,
     var category: String? = "null",
+    var priority: String? = "0",
     var isFavourite: String? = "false",
     var id: String? = "null"
 ){

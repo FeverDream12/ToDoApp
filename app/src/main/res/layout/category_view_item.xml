@@ -6,7 +6,8 @@
     android:layout_margin="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardBackgroundColor="?colorPrimary"
-    app:cardCornerRadius="15dp">
+    app:cardCornerRadius="15dp"
+    app:cardElevation="1dp">
     
     <androidx.cardview.widget.CardView
         android:id="@+id/backCard"

@@ -30,12 +30,9 @@ class TaskItemAdapter(
 
     }
 
-    val differ = AsyncListDiffer(this,diffCallBack)
-
     override fun getItemCount(): Int = taskItems.size
 
     override fun onBindViewHolder(holder: TaskItemViewHolder, position: Int) {
-//        val item = differ.currentList[position]
         holder.bindTaskItem(taskItems[position])
     }
 }

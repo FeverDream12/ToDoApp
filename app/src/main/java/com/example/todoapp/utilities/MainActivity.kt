@@ -13,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.todoapp.R
 import com.example.todoapp.channelId
 import com.example.todoapp.databinding.ActivityMainBinding
+import com.example.todoapp.repeatedTasks.RepeatedTasksActivity
 
 class MainActivity : AppCompatActivity(){
 
@@ -49,6 +50,10 @@ class MainActivity : AppCompatActivity(){
                 }
                 R.id.fav_notes -> {
                     val int = Intent(this, FavouriteNotesActivity::class.java)
+                    startActivity(int)
+                }
+                R.id.repTasks -> {
+                    val int = Intent(this, RepeatedTasksActivity::class.java)
                     startActivity(int)
                 }
             }
