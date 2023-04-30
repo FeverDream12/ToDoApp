@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.calendar.fragment.CalendarFragment">
+    tools:context=".ui.calendar.fragment.CalendarFragment"
+    android:id="@+id/calendarFrag">
     
     <LinearLayout
         android:layout_width="match_parent"

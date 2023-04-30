@@ -9,6 +9,11 @@
         android:icon="@drawable/stat_24"
         android:title="Статистика"/>
 
+    <item
+        android:id="@+id/repTasks"
+        android:icon="@drawable/rep_tasks_24"
+        android:title="Повторяемые задачи"/>
+
     <item android:title="Избранные">
 
         <menu>

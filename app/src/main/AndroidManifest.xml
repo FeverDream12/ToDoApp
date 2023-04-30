@@ -4,9 +4,12 @@
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".TodoApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -14,28 +17,38 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.ToDoApp"
+        android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
-
-        <receiver
-            android:name=".NotificationReceiver"
-            android:enabled="true" />
-
         <activity
-            android:name=".StatisticActivity"
+            android:name=".repeatedTasks.RepeatedTasksActivity"
+            android:exported="true" />
+        <activity
+            android:name=".utilities.FavouriteTasksActivity"
             android:exported="false" />
         <activity
-            android:name=".FavouriteNotesActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name">
+            android:name=".utilities.AuthActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".NotificationReceiver"
+            android:enabled="true" />
+
+        <activity
+            android:name=".utilities.StatisticActivity"
+            android:exported="false" />
+        <activity
+            android:name=".utilities.FavouriteNotesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".utilities.MainActivity"
+            android:exported="true"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>

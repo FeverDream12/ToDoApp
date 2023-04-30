@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/hideCompleteTasks"
+        android:title="Скрыть выполненные задачи"
+        />
+
+    <item android:title="Сортировка">
+
+        <menu>
+
+            <item
+                android:id="@+id/id_sort"
+                android:title="Обычная"/>
+
+            <item android:title="По дате">
+
+                <menu>
+
+                    <item
+                        android:id="@+id/date_sort_asc"
+                        android:title="По возрастанию"/>
+
+                    <item
+                        android:id="@+id/date_sort_desc"
+                        android:title="По убыванию"/>
+
+
+                </menu>
+
+            </item>
+
+
+            <item android:title="По названию">
+
+                <menu>
+
+                    <item
+                        android:id="@+id/name_sort_asc"
+                        android:title="По возрастанию"/>
+
+                    <item
+                        android:id="@+id/name_sort_desc"
+                        android:title="По убыванию"/>
+
+
+                </menu>
+
+            </item>
+
+            <item android:title="По приоритету">
+
+                <menu>
+
+                    <item
+                        android:id="@+id/priority_sort_asc"
+                        android:title="По возрастанию"/>
+
+                    <item
+                        android:id="@+id/priority_sort_desc"
+                        android:title="По убыванию"/>
+
+
+                </menu>
+
+            </item>
+
+        </menu>
+
+    </item>
+
+    <item android:id="@+id/searchTasks"
+        android:title="Поиск"
+        />
+</menu>

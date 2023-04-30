@@ -1,6 +1,7 @@
 package com.example.todoapp.ui.notes.NoteItem
 
 import android.content.Context
+import android.widget.ImageButton
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.R
@@ -22,6 +23,10 @@ class NoteItemViewHolder(
         binding.notesCard.setOnClickListener{
             clickListener.editNoteItem(noteItem)
         }
+
+        if(noteItem.isFavourite == "true"){
+            binding.favourite.visibility = ImageButton.VISIBLE
+        }
     }
 
     private fun popupMenu(noteItem: NoteItem) {
@@ -38,20 +43,6 @@ class NoteItemViewHolder(
                     true
                 }
             }
-        }
-        if(noteItem.isFavourite == "true"){
-            binding.favBtn.setImageResource(R.drawable.star_24)
-        }else{
-            binding.favBtn.setImageResource(R.drawable.star_border_24)
-        }
-
-        binding.favBtn.setOnClickListener{
-            if(noteItem.isFavourite == "true"){
-                binding.favBtn.setImageResource(R.drawable.star_border_24)
-            }else{
-                binding.favBtn.setImageResource(R.drawable.star_24)
-            }
-            clickListener.setNoteFavorite(noteItem)
         }
 
         binding.notesCard.setOnLongClickListener{

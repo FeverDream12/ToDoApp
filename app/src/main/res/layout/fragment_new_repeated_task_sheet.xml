@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".itemSheets.NewRepeatedTaskSheet"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/taskTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Новая задача"
+        android:textColor="?colorSecondaryVariant"
+        android:textSize="27sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        style="@style/TextAppearance.AppCompat.Title"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox.Dense"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="20"
+            android:id="@+id/name"
+            android:hint="Название"
+            >
+
+        </com.google.android.material.textfield.TextInputEditText>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox.Dense"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/desc"
+            android:hint="Описанние"
+            >
+
+        </com.google.android.material.textfield.TextInputEditText>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Дни недели:"
+            android:textSize="17dp"
+            android:layout_marginStart="25dp"/>
+
+        <Button
+            android:id="@+id/selectAllDaysButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Выбрать все"
+            android:textSize="12dp"
+            android:layout_marginEnd="23dp"/>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginVertical="2dp"
+        android:layout_marginHorizontal="20dp">
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardMonday"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="?colorOnPrimary"
+            android:visibility="visible"
+            app:cardElevation="0dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardMondayOutline"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="?colorPrimary"
+                android:visibility="invisible"
+                app:cardElevation="0dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_margin="4dp"
+                app:cardBackgroundColor="?colorOnPrimary"
+                app:cardCornerRadius="5dp"
+                android:visibility="visible"
+                app:cardElevation="0dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="ПН"
+                    android:textSize="18dp"
+                    android:gravity="center"/>
+            </androidx.cardview.widget.CardView>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardTuesday"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:cardCornerRadius="8dp"
+            android:layout_marginStart="3dp"
+            app:cardBackgroundColor="?colorOnPrimary"
+            android:visibility="visible"
+            app:cardElevation="0dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardTuesdayOutline"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="?colorPrimary"
+                android:visibility="invisible"
+                app:cardElevation="0dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_margin="4dp"
+                app:cardBackgroundColor="?colorOnPrimary"
+                app:cardCornerRadius="5dp"
+                android:visibility="visible"
+                app:cardElevation="0dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="ВТ"
+                    android:textSize="18dp"
+                    android:gravity="center"/>
+            </androidx.cardview.widget.CardView>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardWednesday"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:cardCornerRadius="8dp"
+            android:layout_marginStart="3dp"
+            app:cardBackgroundColor="?colorOnPrimary"
+            android:visibility="visible"
+            app:cardElevation="0dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardWednesdayOutline"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="?colorPrimary"
+                android:visibility="invisible"
+                app:cardElevation="0dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_margin="4dp"
+                app:cardBackgroundColor="?colorOnPrimary"
+                app:cardCornerRadius="5dp"
+                android:visibility="visible"
+                app:cardElevation="0dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="СР"
+                    android:textSize="18dp"
+                    android:gravity="center"/>
+            </androidx.cardview.widget.CardView>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardThursday"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:cardCornerRadius="8dp"
+            android:layout_marginStart="3dp"
+            app:cardBackgroundColor="?colorOnPrimary"
+            android:visibility="visible"
+            app:cardElevation="0dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardThursdayOutline"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="?colorPrimary"
+                android:visibility="invisible"
+                app:cardElevation="0dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_margin="4dp"
+                app:cardBackgroundColor="?colorOnPrimary"
+                app:cardCornerRadius="5dp"
+                android:visibility="visible"
+                app:cardElevation="0dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="ЧТ"
+                    android:textSize="18dp"
+                    android:gravity="center"/>
+            </androidx.cardview.widget.CardView>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardFriday"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:cardCornerRadius="8dp"
+            android:layout_marginStart="3dp"
+            app:cardBackgroundColor="?colorOnPrimary"
+            android:visibility="visible"
+            app:cardElevation="0dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardFridayOutline"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="?colorPrimary"
+                android:visibility="invisible"
+                app:cardElevation="0dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_margin="4dp"
+                app:cardBackgroundColor="?colorOnPrimary"
+                app:cardCornerRadius="5dp"
+                android:visibility="visible"
+                app:cardElevation="0dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="ПТ"
+                    android:textSize="18dp"
+                    android:gravity="center"/>
+            </androidx.cardview.widget.CardView>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardSaturday"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:cardCornerRadius="8dp"
+            android:layout_marginStart="3dp"
+            app:cardBackgroundColor="?colorOnPrimary"
+            android:visibility="visible"
+            app:cardElevation="0dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardSaturdayOutline"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="?colorPrimary"
+                android:visibility="invisible"
+                app:cardElevation="0dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_margin="4dp"
+                app:cardBackgroundColor="?colorOnPrimary"
+                app:cardCornerRadius="5dp"
+                android:visibility="visible"
+                app:cardElevation="0dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="СБ"
+                    android:textSize="18dp"
+                    android:gravity="center"/>
+            </androidx.cardview.widget.CardView>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardSunday"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:cardCornerRadius="8dp"
+            android:layout_marginStart="3dp"
+            app:cardBackgroundColor="?colorOnPrimary"
+            android:visibility="visible"
+            app:cardElevation="0dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardSundayOutline"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="?colorPrimary"
+                android:visibility="invisible"
+                app:cardElevation="0dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_margin="4dp"
+                app:cardBackgroundColor="?colorOnPrimary"
+                app:cardCornerRadius="5dp"
+                android:visibility="visible"
+                app:cardElevation="0dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="ВC"
+                    android:textSize="18dp"
+                    android:gravity="center"/>
+            </androidx.cardview.widget.CardView>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+    <TimePicker
+        android:id="@+id/timePicker"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:timePickerMode="spinner"
+        />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/saveButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="Сохранить"
+        android:textColor="?colorOnPrimary"
+        android:backgroundTint="?attr/colorPrimary"
+        app:cornerRadius="10dp"/>
+
+
+</LinearLayout>
