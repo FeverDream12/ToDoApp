@@ -3,6 +3,7 @@ package com.example.todoapp.utilities
 import android.app.*
 import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -81,5 +82,19 @@ class MainActivity : AppCompatActivity(){
         notificationPermissionLauncher.launch(
             android.Manifest.permission.SCHEDULE_EXACT_ALARM
         )
+        notificationPermissionLauncher.launch(
+            android.Manifest.permission.RECORD_AUDIO
+        )
+        notificationPermissionLauncher.launch(
+            android.Manifest.permission.MANAGE_EXTERNAL_STORAGE
+        )
+        notificationPermissionLauncher.launch(
+            android.Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+        notificationPermissionLauncher.launch(
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+
+
     }
 }

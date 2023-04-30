@@ -85,6 +85,9 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
                     "dueDate" ->{
                         taskList.sortBy { it.dueDate}
                     }
+                    "priority" ->{
+                        taskList.sortBy { it.priority}
+                    }
                 }
                 if(sortOrder == "desc"){
                     taskList.reverse()
@@ -252,6 +255,18 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
                 }
                 R.id.name_sort_desc ->{
                     sortKey = "name"
+                    sortOrder = "desc"
+                    refreshList()
+                    true
+                }
+                R.id.priority_sort_asc ->{
+                    sortKey = "priority"
+                    sortOrder = "asc"
+                    refreshList()
+                    true
+                }
+                R.id.priority_sort_desc ->{
+                    sortKey = "priority"
                     sortOrder = "desc"
                     refreshList()
                     true

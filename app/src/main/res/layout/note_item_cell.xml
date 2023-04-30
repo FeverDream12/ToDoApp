@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -37,14 +38,14 @@
                     />
 
                 <ImageButton
-
-                    android:id="@+id/favBtn"
+                    android:visibility="gone"
+                    android:id="@+id/favourite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:background="@null"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/star_border_24" />
+                    android:src="@drawable/star_24"/>
 
             </LinearLayout>
 

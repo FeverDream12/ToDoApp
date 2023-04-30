@@ -23,7 +23,6 @@ class NewNoteSheet(var noteItem: NoteItem?) : BottomSheetDialogFragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val activity = requireActivity()
 
         auth = FirebaseAuth.getInstance()
         databaseRef = FirebaseDatabase.getInstance().reference.child("NoteItems").child(auth.currentUser?.uid.toString())
@@ -41,9 +40,6 @@ class NewNoteSheet(var noteItem: NoteItem?) : BottomSheetDialogFragment(){
         binding.doneButton.setOnClickListener{
             saveAction()
         }
-        binding.backButton.setOnClickListener{
-            dismiss()
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,10 +54,9 @@ class NewNoteSheet(var noteItem: NoteItem?) : BottomSheetDialogFragment(){
     }
 
     private fun saveAction() {
-        val formatter = SimpleDateFormat("EEE, d MMM yyyy HH:mm")
         val title = binding.editTittleText.text.toString()
         val note = binding.editNoteText.text.toString()
-        val date = formatter.format(Date())
+        val date = SimpleDateFormat("EEE, d MMM yyyy HH:mm").format(Date())
 
         if(title.isNotEmpty() || note.isNotEmpty()){
             if(noteItem == null)
