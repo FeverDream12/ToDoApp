@@ -1,6 +1,6 @@
 package com.example.todoapp.ui.home.fragment
 
-import com.example.todoapp.R
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
@@ -10,6 +10,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.SearchView
 import android.widget.Toast
@@ -20,6 +23,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.*
+import com.example.todoapp.R
 import com.example.todoapp.databinding.FragmentHomeBinding
 import com.example.todoapp.itemSheets.NewTaskSheet
 import com.example.todoapp.ui.home.Category.CategoryAdapter
@@ -31,6 +35,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
+import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 
@@ -39,6 +44,8 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
 
     private lateinit var binding: FragmentHomeBinding
 
+    private lateinit var anim: Animation
+    private lateinit var animRight: Animation
     private lateinit var databaseRef: DatabaseReference
     private lateinit var auth: FirebaseAuth
     private lateinit var taskList: ArrayList<TaskItem>
@@ -47,17 +54,24 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
     private var searchQuery = ""
     private var sortKey = "id"
     private var sortOrder = "asc"
+    private var firstLoad = true
+    private var updated = false
+    private var selectedCategoryId = 1
     private lateinit var categories : ArrayList<String>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
         databaseRef = FirebaseDatabase.getInstance().reference.child("TaskItems").child(auth.currentUser?.uid.toString())
-        taskList = arrayListOf<TaskItem>()
+        taskList = arrayListOf()
 
         binding.newTaskButton.setOnClickListener{
             NewTaskSheet(null,taskList).show(childFragmentManager, "newTaskTag")
         }
+
+        anim = AnimationUtils.loadLayoutAnimation(context,R.anim.layout_animation).animation
+        animRight = AnimationUtils.loadLayoutAnimation(context,R.anim.layout_animation_right).animation
+        binding.listRecycleView.startAnimation(anim)
 
         deleteSwipe()
         popupMenu()
@@ -92,12 +106,17 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
                 if(sortOrder == "desc"){
                     taskList.reverse()
                 }
+                updated = true
                 setCategoriesList()
                 setCategory(selectedCategory)
                 setRecycleView(searchQuery)
+                if(firstLoad){
+                    firstLoad = false
+                    binding.listRecycleView.startAnimation(anim)
+                }
             }
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -215,17 +234,19 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
     private fun popupMenu() {
         val popupMenu = PopupMenu(context,binding.menuDots)
         popupMenu.inflate(R.menu.home_menu)
+        popupMenu.setForceShowIcon(true)
 
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.searchTasks ->{
-                    if(binding.tasksSearchCard.visibility == CardView.VISIBLE){
-                        binding.tasksSearchCard.visibility = CardView.GONE
+                    if(binding.searchView.visibility == LinearLayout.VISIBLE){
+                        binding.searchView.visibility = LinearLayout.GONE
                         binding.tasksSearchView.setQuery("",false)
                         searchQuery = ""
                     }else{
-                        binding.tasksSearchCard.visibility = CardView.VISIBLE
+                        binding.searchView.visibility = LinearLayout.VISIBLE
                     }
+                    updated = true
                     setCategory("Все")
                     true
                 }
@@ -365,6 +386,10 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
                 layoutManager = LinearLayoutManager(context)
                 adapter = TaskItemAdapter(liveList(searchQuery), activity)
             }
+            binding.listRecycleView.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = TaskItemAdapter(liveList(searchQuery), activity)
+            }
         }else{
             binding.listRecycleView.apply {
                 layoutManager = LinearLayoutManager(context)
@@ -462,5 +487,27 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
         selectedCategory = category
         setCategoriesView(categories)
         setRecycleView(searchQuery)
+
+        if(!updated){
+            if(getCategoryId(category) > selectedCategoryId){
+                binding.listRecycleView.startAnimation(animRight)
+            }else{
+                binding.listRecycleView.startAnimation(anim)
+            }
+        }
+        updated = false
+        selectedCategoryId = getCategoryId(category)
+    }
+
+    fun getCategoryId(category: String) : Int{
+        var id = 0
+
+        categories.forEach{
+            id++
+            if(it == category ){
+                return id
+            }
+        }
+        return id
     }
 }

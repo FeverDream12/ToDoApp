@@ -16,6 +16,7 @@
     <color name="NoteColor">#ddc5ef</color>
     <color name="CalendarColor">#d8eaea</color>
     <color name="CircleColor">#216578</color>
+    <color name="CalendarCircleColor">#548b97</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
     <color name="light_blue_A200">#FF40C4FF</color>
@@ -24,5 +25,8 @@
     <color name="light_blue_50">#FFE1F5FE</color>
     <color name="light_blue_200">#FF81D4FA</color>
     <color name="grey">#a1a8a8</color>
+    <color name="priority_0">#0bbd61</color>
+    <color name="priority_1">#ffe600</color>
+    <color name="priority_2">#F64B4B</color>
 
 </resources>

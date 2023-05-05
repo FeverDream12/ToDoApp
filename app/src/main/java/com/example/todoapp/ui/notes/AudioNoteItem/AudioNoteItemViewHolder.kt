@@ -40,14 +40,6 @@ class AudioNoteItemViewHolder(
             binding.favourite.visibility = ImageButton.VISIBLE
         }
 
-        if(audioNoteItem.text.toString() != "null"){
-            binding.audioNoteText.visibility = TextView.VISIBLE
-            binding.audioNoteText.text = audioNoteItem.text.toString()
-        }else{
-            binding.audioNoteText.visibility = TextView.GONE
-            binding.audioNoteText.text = ""
-        }
-
         auth = FirebaseAuth.getInstance()
         databaseRef = FirebaseDatabase.getInstance().reference.child("AudioNoteItems").child(auth.currentUser?.uid.toString())
         storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(audioNoteItem.audioUrl.toString())

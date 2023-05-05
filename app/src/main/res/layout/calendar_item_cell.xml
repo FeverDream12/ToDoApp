@@ -38,28 +38,26 @@
             android:layout_marginTop="2dp"
             />
 
-        <ImageView
+        <androidx.cardview.widget.CardView
             android:id="@+id/notCircle"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="26dp"
-            android:layout_marginTop="26dp"
-            android:src="@drawable/baseline_lens_24"
-            />
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginLeft="27dp"
+            app:cardCornerRadius="10dp"
+            app:cardBackgroundColor="@color/CalendarCircleColor"
+            android:layout_marginTop="27dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tasksCount"
-            android:text="1"
-            android:textSize="13sp"
-            android:textColor="?colorOnPrimary"
-            android:layout_marginTop="26dp"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tasksCount"
+                android:text="15"
+                android:layout_gravity="center"
+                android:textSize="13sp"
+                android:textColor="?colorOnPrimary"
+                />
 
-            android:layout_marginLeft="32dp"
-            />
-
-
+        </androidx.cardview.widget.CardView>
 
     </androidx.cardview.widget.CardView>
 

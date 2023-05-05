@@ -7,6 +7,11 @@ import android.graphics.Paint
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.PopupMenu
+import android.widget.TextView
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.view.menu.MenuPopupHelper
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.R
@@ -37,16 +42,18 @@ class TaskItemViewHolder(
             binding.dueTime.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
         }
 
+        //binding.favBtn.visibility = ImageButton.INVISIBLE
         if(taskItem.isFavourite == "true"){
             binding.favBtn.visibility = ImageButton.VISIBLE
+        }else{
+            binding.favBtn.visibility = ImageButton.INVISIBLE
         }
 
+        binding.date.setTextColor(binding.dueTime.currentTextColor)
         if(lateCheck(taskItem) && taskItem.status == "live"){
-            binding.lateDate.text = "Опиздун! " + taskItem.dueDate
-            binding.date.text = ""
+            binding.date.setTextColor(ContextCompat.getColor(context,R.color.red))
         }else if (!lateCheck(taskItem) && taskItem.status == "live"){
             binding.date.text = taskItem.dueDate
-            binding.lateDate.text = ""
         }else if(taskItem.status == "done"){
             binding.date.text = "Задача выполнена " + taskItem.completedDateString
         }
@@ -68,7 +75,6 @@ class TaskItemViewHolder(
             binding.notif.visibility = ImageView.INVISIBLE
         }
 
-
         binding.completeButton.setOnClickListener{
             clickListener.completeTaskItem(taskItem)
         }
@@ -79,16 +85,31 @@ class TaskItemViewHolder(
 
         if(taskItem.dueTime() != null){
             binding.dueTime.text = timeFormat.format(taskItem.dueTime())
-            //binding.dueTime.text = taskItem.dueTimeString
         }else{
             binding.dueTime.text = ""
+        }
+
+        if(taskItem.priority == "0"){
+            binding.completeButton.setColorFilter(ContextCompat.getColor(context,R.color.priority_0))
+            binding.priorityView.setBackgroundColor(ContextCompat.getColor(context,R.color.priority_0))
+        }else if(taskItem.priority == "1"){
+            binding.completeButton.setColorFilter(ContextCompat.getColor(context,R.color.priority_1))
+            binding.priorityView.setBackgroundColor(ContextCompat.getColor(context,R.color.priority_1))
+        }else if(taskItem.priority == "2"){
+            binding.completeButton.setColorFilter(ContextCompat.getColor(context,R.color.priority_2))
+            binding.priorityView.setBackgroundColor(ContextCompat.getColor(context,R.color.priority_2))
+        }
+
+        if(taskItem.completedDateString != "null"){
+            binding.completeButton.setImageResource(taskItem.imageResource())
+            binding.completeButton.setColorFilter(taskItem.imageColor(context))
         }
     }
 
 
 
     fun lateCheck(taskItem: TaskItem) : Boolean{
-        if(taskItem.dueTime() != null){
+        if(taskItem.dueTimeString != "null"){
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
             return LocalDateTime.now().isAfter(LocalDateTime.parse(taskItem.dueDate + " " + taskItem.dueTimeString,formatter))
         }else{
@@ -99,14 +120,14 @@ class TaskItemViewHolder(
 
     private fun popupMenu(taskItem: TaskItem) {
         val popupMenu = PopupMenu(context,binding.taskCellContainer)
-        popupMenu.inflate(R.menu.pop_up_task_menu)
+        popupMenu.inflate(R.menu.pop_up_menu)
+        popupMenu.setForceShowIcon(true)
 
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId){
-                R.id.share_task ->{
+                R.id.share ->{
                     val share = Intent(Intent.ACTION_SEND)
                     share.type = "text/plane"
-                    //share.setPackage("com.todoapp")
                     share.putExtra(Intent.EXTRA_TEXT,"Делюсь своей поставлленной задачей \"" + taskItem.name + "\"\n" + taskItem.desc + "\nВыполнить до: " + taskItem.dueDate)
                     val chooser = Intent.createChooser(share,"Поделиться через...")
 
@@ -120,7 +141,6 @@ class TaskItemViewHolder(
                 }
             }
         }
-
 
         binding.taskCellContainer.setOnLongClickListener{
             try {

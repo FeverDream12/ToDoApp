@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
+
         <activity
             android:name="com.example.todoapp.utilities.StatisticActivity"
             android:exported="false"
@@ -8,13 +9,7 @@
             android:theme="@style/Theme.ToDoApp.NoActionBar" />
 
         <activity
-            android:name="com.example.todoapp.utilities.FavouriteNotesActivity"
-            android:exported="false"
-            android:label="FavouriteNotesActivity"
-            android:theme="@style/Theme.ToDoApp.NoActionBar" />
-
-        <activity
-            android:name="com.example.todoapp.utilities.FavouriteTasksActivity"
+            android:name="com.example.todoapp.utilities.FavouritesActivity"
             android:exported="false"
             android:label="FavouriteNotesActivity"
             android:theme="@style/Theme.ToDoApp.NoActionBar" />
@@ -30,5 +25,6 @@
             android:exported="true"
             android:label="ToDoApp"
             android:theme="@style/Theme.ToDoApp.NoActionBar" />
+
     </application>
 </manifest>

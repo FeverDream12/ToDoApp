@@ -22,6 +22,9 @@ class SignUpFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
 
         binding = FragmentSignUpBinding.inflate(inflater,container,false)
+        binding.emailInput.setBackgroundColor(binding.cardView.cardBackgroundColor.defaultColor)
+        binding.passwordInput.setBackgroundColor(binding.cardView.cardBackgroundColor.defaultColor)
+        binding.passwordReInput.setBackgroundColor(binding.cardView.cardBackgroundColor.defaultColor)
 
         return binding.root
     }
@@ -50,6 +53,7 @@ class SignUpFragment : Fragment() {
                             if(it.isSuccessful){
                                 Toast.makeText(context,"Успешная регистрация",Toast.LENGTH_SHORT).show()
                                 navController.navigate(R.id.action_signUpFragment_to_mainActivity)
+                                requireActivity().finish()
                             }else{
                                 Toast.makeText(context,it.exception?.message,Toast.LENGTH_SHORT).show()
                             }

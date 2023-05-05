@@ -5,6 +5,5 @@ class AudioNoteItem (
     var date: String? = "null",
     var isFavourite: String? = "false",
     var audioUrl: String? = "null",
-    var text: String? = "null",
     var id: String? = "null"
 )

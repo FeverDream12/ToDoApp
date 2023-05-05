@@ -1,6 +1,7 @@
 package com.example.todoapp.ui.notes.NoteItem
 
 import android.content.Context
+import android.content.Intent
 import android.widget.ImageButton
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
@@ -32,11 +33,17 @@ class NoteItemViewHolder(
     private fun popupMenu(noteItem: NoteItem) {
         val popupMenu = PopupMenu(context,binding.notesCard)
         popupMenu.inflate(R.menu.pop_up_menu)
+        popupMenu.setForceShowIcon(true)
 
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId){
-                R.id.delete_note ->{
-                    clickListener.deleteNoteItem(noteItem)
+                R.id.share ->{
+                    val share = Intent(Intent.ACTION_SEND)
+                    share.type = "text/plane"
+                    share.putExtra(Intent.EXTRA_TEXT,"\"" + noteItem.title + "\"\n" + noteItem.note + "\n" + noteItem.date)
+                    val chooser = Intent.createChooser(share,"Поделиться через...")
+
+                    context.startActivity(chooser)
                     true
                 }
                 else -> {

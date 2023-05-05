@@ -3,7 +3,6 @@ package com.example.todoapp.utilities
 import android.app.*
 import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -15,16 +14,19 @@ import com.example.todoapp.R
 import com.example.todoapp.channelId
 import com.example.todoapp.databinding.ActivityMainBinding
 import com.example.todoapp.repeatedTasks.RepeatedTasksActivity
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var auth: FirebaseAuth
     private val notificationPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+        auth = FirebaseAuth.getInstance()
         setContentView(binding.root)
 
         val navView: BottomNavigationView = binding.navView
@@ -45,16 +47,17 @@ class MainActivity : AppCompatActivity(){
                     val int = Intent(this, StatisticActivity::class.java)
                     startActivity(int)
                 }
-                R.id.fav_tasks -> {
-                val int = Intent(this, FavouriteTasksActivity::class.java)
-                    startActivity(int)
-                }
-                R.id.fav_notes -> {
-                    val int = Intent(this, FavouriteNotesActivity::class.java)
+                R.id.nav_fav -> {
+                val int = Intent(this, FavouritesActivity::class.java)
                     startActivity(int)
                 }
                 R.id.repTasks -> {
                     val int = Intent(this, RepeatedTasksActivity::class.java)
+                    startActivity(int)
+                }
+                R.id.nav_logout -> {
+                    auth.signOut()
+                    val int = Intent(this, AuthActivity::class.java)
                     startActivity(int)
                 }
             }

@@ -40,7 +40,6 @@ class NewAudioNoteSheet(var audioNoteItem: AudioNoteItem?) : BottomSheetDialogFr
     private lateinit var databaseRef: DatabaseReference
     private lateinit var storageRef: StorageReference
     private lateinit var mediaRecorder: MediaRecorder
-    private lateinit var speechRecognizer: SpeechRecognizer
 
 
     private lateinit var noteUrl: String
@@ -109,7 +108,7 @@ class NewAudioNoteSheet(var audioNoteItem: AudioNoteItem?) : BottomSheetDialogFr
             val title = binding.editTittleText.text.toString()
             val date = formatter.format(Date())
 
-            val newAudioNote = AudioNoteItem(title,date,"false",noteUrl,"null")
+            val newAudioNote = AudioNoteItem(title,date,"false",noteUrl)
 
             val noteId = databaseRef.push().key!!
             databaseRef.child(noteId).setValue(newAudioNote)

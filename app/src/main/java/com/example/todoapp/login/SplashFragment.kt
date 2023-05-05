@@ -1,5 +1,6 @@
 package com.example.todoapp.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,6 +11,8 @@ import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.todoapp.R
+import com.example.todoapp.repeatedTasks.RepeatedTasksActivity
+import com.example.todoapp.utilities.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class SplashFragment : Fragment() {
@@ -17,7 +20,6 @@ class SplashFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var navController: NavController
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
-
 
         return inflater.inflate(R.layout.fragment_splash, container, false)
     }
@@ -31,10 +33,11 @@ class SplashFragment : Fragment() {
         Handler(Looper.myLooper()!!).postDelayed(Runnable {
             if(auth.currentUser != null){
                 navController.navigate(R.id.action_splashFragment_to_mainActivity)
+                requireActivity().finish()
             }else{
                 navController.navigate(R.id.action_splashFragment_to_signInFragment)
             }
-        },3000)
+        },1500)
     }
 
 }

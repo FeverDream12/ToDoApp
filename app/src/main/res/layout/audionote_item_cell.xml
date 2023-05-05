@@ -7,7 +7,7 @@
     android:layout_margin="9dp"
     android:background="?colorSecondary"
     app:cardCornerRadius="12dp"
-    android:elevation="1dp"
+    app:cardElevation="1dp"
     android:id="@+id/audioNotesCard">
 
     <LinearLayout
@@ -93,18 +93,11 @@
                 android:layout_gravity="center_vertical"
                 android:text=""/>
 
-<!--            <ImageView-->
-<!--                android:id="@+id/audioToTextButton"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:src="@drawable/audio_to_text_24"-->
-<!--                android:layout_gravity="center_vertical"/>-->
-
         </LinearLayout>
 
         <TextView
             android:id="@+id/audioNoteText"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"

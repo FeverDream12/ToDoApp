@@ -23,6 +23,8 @@ class SignInFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
 
         binding = FragmentSignInBinding.inflate(inflater,container,false)
+        binding.emailLogInInput.setBackgroundColor(binding.cardView.cardBackgroundColor.defaultColor)
+        binding.passwordLogInInput.setBackgroundColor(binding.cardView.cardBackgroundColor.defaultColor)
 
         return binding.root
     }
@@ -49,6 +51,7 @@ class SignInFragment : Fragment() {
                         if(it.isSuccessful){
                             Toast.makeText(context,"Успешный вход", Toast.LENGTH_SHORT).show()
                             navController.navigate(R.id.action_signInFragment_to_mainActivity)
+                            requireActivity().finish()
                         }else{
                             Toast.makeText(context,it.exception?.message, Toast.LENGTH_SHORT).show()
                         }

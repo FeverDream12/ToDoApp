@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -38,13 +40,16 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
 
     private lateinit var binding: FragmentCalendarBinding
     private lateinit var selectedDate: LocalDate
-    private var weekView: Boolean = false
-    private var selectedWeekDay: String = LocalDate.now().dayOfMonth.toString()
-    private var selectedDay: String = LocalDate.now().dayOfMonth.toString()
-
+    private lateinit var anim: Animation
     private lateinit var taskList: ArrayList<TaskItem>
     private lateinit var databaseRef: DatabaseReference
     private lateinit var auth: FirebaseAuth
+
+    private var weekView: Boolean = false
+    private var loaded: Boolean = false
+    private var selectedWeekDay: String = LocalDate.now().dayOfMonth.toString()
+    private var selectedDay: String = LocalDate.now().dayOfMonth.toString()
+    private var selectedDateString: String = LocalDate.now().toString()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentCalendarBinding.inflate(inflater, container, false)
@@ -57,6 +62,8 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
 
         deleteSwipe()
 
+        anim = AnimationUtils.loadLayoutAnimation(context,R.anim.layout_animation).animation
+
         databaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 taskList.clear()
@@ -67,11 +74,13 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
                         taskList.add(task!!)
                     }
                 }
+                if(!loaded)
+                    loaded = true
                 setCalendarView()
                 setDate(selectedDay)
             }
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -222,6 +231,10 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
 
     override fun setDate(date: String) {
         if(date != ""){
+            if(!loaded){
+                binding.listRecycleView.startAnimation(anim)
+            }
+            loaded = false
             selectedWeekDay = date
             selectedDay = date
 
@@ -231,7 +244,6 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
                 setMonthView()
             }
 
-            var selectedDateStr : LocalDate
             var dateStr: String
 
             if(date.length == 1){
@@ -251,9 +263,9 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
                 binding.descText.text = "Нет поставленных задач на \n" + dateStr
                 setRecycleView("")
             }else{
-                selectedDateStr = LocalDate.parse(dateStr)
+                selectedDateString = LocalDate.parse(dateStr).toString()
                 binding.descText.text = "Задачи на " + dateStr + ":"
-                setRecycleView(selectedDateStr.toString())
+                setRecycleView(selectedDateString)
             }
         }
     }
@@ -325,7 +337,7 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
 
                 var item: TaskItem
 
-                item = dateFilteredList(selectedDate.toString())[position]
+                item = dateFilteredList(selectedDateString)[position]
 
                 when (direction){
                     ItemTouchHelper.LEFT ->{

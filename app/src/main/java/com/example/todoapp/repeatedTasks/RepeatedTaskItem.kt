@@ -10,14 +10,12 @@ import java.time.LocalTime
 class RepeatedTaskItem(
     var name: String?= "null",
     var desc: String?= "null",
-    var daysOfWeek : ArrayList<Int>? = arrayListOf<Int>(),
-    var doneDays : ArrayList<String>? = arrayListOf<String>(),
+    var daysOfWeek : ArrayList<Int>? = arrayListOf(),
+    var doneDays : ArrayList<String>? = arrayListOf(),
     var dueTimeString: String?= "null",
     var id: String? = "null"
 ) {
     fun dueTime(): LocalTime? = LocalTime.parse(dueTimeString, TaskItem.timeFormatter)
-
-    fun doneToday(): Boolean? = doneDays!!.contains(LocalDate.now().toString())
 
     fun imageResource(day : String): Int = if(doneDays!!.contains(day)) R.drawable.checked_24 else R.drawable.unchecked_24
 

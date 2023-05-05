@@ -3,6 +3,8 @@ package com.example.todoapp.ui.notes.fragment
 import android.graphics.Canvas
 import android.os.Bundle
 import android.view.*
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.SearchView
 import android.widget.Toast
@@ -32,13 +34,16 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 class NotesFragment : Fragment(), NoteItemClickListener, AudioNoteItemClickListener {
 
     private lateinit var binding: FragmentNotesBinding
-
     private lateinit var notesDatabaseRef: DatabaseReference
     private lateinit var audioNotesDatabaseRef: DatabaseReference
     private lateinit var auth: FirebaseAuth
     private lateinit var notesList: ArrayList<NoteItem>
     private lateinit var audioNotesList: ArrayList<AudioNoteItem>
+    private lateinit var anim: Animation
+
     private var viewMod = "notes"
+    private var searchQuery = ""
+    private var firstNotesLoaded: Boolean = true
 
     override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentNotesBinding.inflate(inflater, container, false)
@@ -46,6 +51,8 @@ class NotesFragment : Fragment(), NoteItemClickListener, AudioNoteItemClickListe
         auth = FirebaseAuth.getInstance()
         notesDatabaseRef = FirebaseDatabase.getInstance().reference.child("NoteItems").child(auth.currentUser?.uid.toString())
         audioNotesDatabaseRef = FirebaseDatabase.getInstance().reference.child("AudioNoteItems").child(auth.currentUser?.uid.toString())
+
+        anim = AnimationUtils.loadLayoutAnimation(context,R.anim.layout_animation).animation
 
         notesList = arrayListOf()
         audioNotesList = arrayListOf()
@@ -59,7 +66,8 @@ class NotesFragment : Fragment(), NoteItemClickListener, AudioNoteItemClickListe
                 binding.audioNotesMod.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey))
                 binding.notesModUnderline.visibility = CardView.VISIBLE
                 binding.audioNotesModUnderline.visibility = CardView.GONE
-                setNotesRecycleView()
+                setNotesRecycleView(searchQuery)
+                binding.NotesRecycleView.startAnimation(anim)
             }
         }
 
@@ -70,7 +78,8 @@ class NotesFragment : Fragment(), NoteItemClickListener, AudioNoteItemClickListe
                 binding.notesMod.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey))
                 binding.audioNotesModUnderline.visibility = CardView.VISIBLE
                 binding.notesModUnderline.visibility = CardView.GONE
-                setNotesRecycleView()
+                setNotesRecycleView(searchQuery)
+                binding.NotesRecycleView.startAnimation(anim)
             }
         }
 
@@ -84,10 +93,14 @@ class NotesFragment : Fragment(), NoteItemClickListener, AudioNoteItemClickListe
                         notesList.add(note!!)
                     }
                 }
-                setNotesRecycleView()
+                if(firstNotesLoaded){
+                    firstNotesLoaded = false
+                    binding.NotesRecycleView.startAnimation(anim)
+                }
+                setNotesRecycleView(searchQuery)
             }
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -101,10 +114,10 @@ class NotesFragment : Fragment(), NoteItemClickListener, AudioNoteItemClickListe
                         audioNotesList.add(note!!)
                     }
                 }
-                setNotesRecycleView()
+                setNotesRecycleView(searchQuery)
             }
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -124,22 +137,26 @@ class NotesFragment : Fragment(), NoteItemClickListener, AudioNoteItemClickListe
             override fun onQueryTextChange(newText: String?): Boolean {
 
                 if(newText != null){
+                    searchQuery = newText
                     if(newText != ""){
-                        setFilteredNotesRecycleView(newText)
+                        setNotesRecycleView(newText)
                     }else{
-                        setNotesRecycleView()
+                        setNotesRecycleView("")
                     }
                 }
                 return true
             }
         })
-        setNotesRecycleView()
+
+        binding.NotesRecycleView.startAnimation(anim)
+        setNotesRecycleView(searchQuery)
         deleteSwipe()
+
         return binding.root
     }
 
 
-    private fun setNotesRecycleView() {
+    private fun setNotesRecycleView(string: String) {
         val activity = this
 
         if(viewMod == "notes"){
@@ -148,31 +165,19 @@ class NotesFragment : Fragment(), NoteItemClickListener, AudioNoteItemClickListe
                 binding.NotesRecycleView.layoutManager = StaggeredGridLayoutManager(2,LinearLayout.VERTICAL)
                 layoutManager = LinearLayoutManager(context)
                 layoutManager = StaggeredGridLayoutManager(2,LinearLayout.VERTICAL)
-                adapter= NoteItemAdapter(notesList, activity)
+                adapter= NoteItemAdapter(filteredNotesList(string), activity)
             }
         }else if(viewMod == "audio"){
             binding.NotesRecycleView.apply {
                 layoutManager = LinearLayoutManager(context)
-                adapter= AudioNoteItemAdapter(audioNotesList, activity)
+                adapter= AudioNoteItemAdapter(filteredAudioNotesList(string), activity)
             }
         }
     }
 
-    private fun setFilteredNotesRecycleView(string: String) {
-        val activity = this
-
-        binding.NotesRecycleView.apply {
-            binding.NotesRecycleView.setHasFixedSize(true)
-            binding.NotesRecycleView.layoutManager = StaggeredGridLayoutManager(2,LinearLayout.VERTICAL)
-            layoutManager = LinearLayoutManager(context)
-            layoutManager = StaggeredGridLayoutManager(2,LinearLayout.VERTICAL)
-            adapter= NoteItemAdapter(filteredNotesList(string), activity)
-        }
-
-    }
-
     private fun filteredNotesList(string: String): ArrayList<NoteItem> {
         val filteredNotesList = arrayListOf<NoteItem>()
+        val liveList = notesList
 
         notesList.forEach {
             if(it.note!!.lowercase().contains(string.lowercase()) || it.title!!.lowercase().contains(string.lowercase())){
@@ -180,7 +185,27 @@ class NotesFragment : Fragment(), NoteItemClickListener, AudioNoteItemClickListe
             }
         }
 
-        return filteredNotesList
+        if(string != ""){
+            return filteredNotesList
+        }else{
+            return liveList
+        }
+    }
+
+    private fun filteredAudioNotesList(string: String): ArrayList<AudioNoteItem> {
+        val filteredAudioNotesList = arrayListOf<AudioNoteItem>()
+        val liveList = audioNotesList
+        audioNotesList.forEach {
+            if(it.title!!.lowercase().contains(string.lowercase())){
+                filteredAudioNotesList.add(it)
+            }
+        }
+
+        if(string != ""){
+            return filteredAudioNotesList
+        }else{
+            return liveList
+        }
     }
 
     override fun editNoteItem(noteItem: NoteItem) {
@@ -246,9 +271,9 @@ class NotesFragment : Fragment(), NoteItemClickListener, AudioNoteItemClickListe
                 var audioNoteItem : AudioNoteItem? = null
 
                 if(viewMod == "notes"){
-                    noteItem = notesList[position]
+                    noteItem = filteredNotesList(searchQuery)[position]
                 }else if(viewMod == "audio"){
-                    audioNoteItem = audioNotesList[position]
+                    audioNoteItem = filteredAudioNotesList(searchQuery)[position]
                 }
 
                 when (direction){

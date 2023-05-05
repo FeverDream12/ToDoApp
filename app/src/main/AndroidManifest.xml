@@ -20,12 +20,6 @@
         android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
         <activity
-            android:name=".repeatedTasks.RepeatedTasksActivity"
-            android:exported="true" />
-        <activity
-            android:name=".utilities.FavouriteTasksActivity"
-            android:exported="false" />
-        <activity
             android:name=".utilities.AuthActivity"
             android:exported="true">
             <intent-filter>
@@ -38,12 +32,14 @@
         <receiver
             android:name=".NotificationReceiver"
             android:enabled="true" />
-
         <activity
             android:name=".utilities.StatisticActivity"
             android:exported="false" />
         <activity
-            android:name=".utilities.FavouriteNotesActivity"
+            android:name=".repeatedTasks.RepeatedTasksActivity"
+            android:exported="true" />
+        <activity
+            android:name=".utilities.FavouritesActivity"
             android:exported="false" />
         <activity
             android:name=".utilities.MainActivity"

@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/hideCompleteTasks"
+    <item
+        android:id="@+id/hideCompleteTasks"
         android:title="Скрыть выполненные задачи"
+        android:icon="@drawable/hide_24"
         />
 
-    <item android:title="Сортировка">
+    <item
+        android:icon="@drawable/sort_24"
+        android:title="Сортировка">
 
         <menu>
 
@@ -69,7 +73,9 @@
 
     </item>
 
-    <item android:id="@+id/searchTasks"
+    <item
+        android:id="@+id/searchTasks"
         android:title="Поиск"
+        android:icon="@drawable/search_24"
         />
 </menu>
