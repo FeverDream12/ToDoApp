@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -40,12 +41,15 @@ class NotesFragment : Fragment(), NoteItemClickListener, AudioNoteItemClickListe
     private lateinit var notesList: ArrayList<NoteItem>
     private lateinit var audioNotesList: ArrayList<AudioNoteItem>
     private lateinit var anim: Animation
+    private lateinit var animRight: Animation
 
+    private val notificationPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
     private var viewMod = "notes"
     private var searchQuery = ""
     private var firstNotesLoaded: Boolean = true
 
     override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?, savedInstanceState: Bundle?): View {
+
         binding = FragmentNotesBinding.inflate(inflater, container, false)
 
         auth = FirebaseAuth.getInstance()
@@ -53,6 +57,7 @@ class NotesFragment : Fragment(), NoteItemClickListener, AudioNoteItemClickListe
         audioNotesDatabaseRef = FirebaseDatabase.getInstance().reference.child("AudioNoteItems").child(auth.currentUser?.uid.toString())
 
         anim = AnimationUtils.loadLayoutAnimation(context,R.anim.layout_animation).animation
+        animRight = AnimationUtils.loadLayoutAnimation(context,R.anim.layout_animation_right).animation
 
         notesList = arrayListOf()
         audioNotesList = arrayListOf()
@@ -79,7 +84,7 @@ class NotesFragment : Fragment(), NoteItemClickListener, AudioNoteItemClickListe
                 binding.audioNotesModUnderline.visibility = CardView.VISIBLE
                 binding.notesModUnderline.visibility = CardView.GONE
                 setNotesRecycleView(searchQuery)
-                binding.NotesRecycleView.startAnimation(anim)
+                binding.NotesRecycleView.startAnimation(animRight)
             }
         }
 
@@ -125,7 +130,12 @@ class NotesFragment : Fragment(), NoteItemClickListener, AudioNoteItemClickListe
         binding.newNoteButton.setOnClickListener{
             when(viewMod){
                 "notes" -> NewNoteSheet(null).show(childFragmentManager, "newNoteTag")
-                "audio" -> NewAudioNoteSheet(null).show(childFragmentManager, "newAudioNoteTag")
+                "audio" -> {
+                    notificationPermissionLauncher.launch(
+                        android.Manifest.permission.RECORD_AUDIO
+                    )
+                    NewAudioNoteSheet(null).show(childFragmentManager, "newAudioNoteTag")
+                }
             }
         }
 

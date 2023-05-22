@@ -43,6 +43,8 @@ import java.time.LocalDate
 class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListener {
 
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var taskAdapter: TaskItemAdapter
+    private lateinit var adapterList: ArrayList<TaskItem>
 
     private lateinit var anim: Animation
     private lateinit var animRight: Animation
@@ -66,7 +68,7 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
         taskList = arrayListOf()
 
         binding.newTaskButton.setOnClickListener{
-            NewTaskSheet(null,taskList).show(childFragmentManager, "newTaskTag")
+            NewTaskSheet(null,taskList, null).show(childFragmentManager, "newTaskTag")
         }
 
         anim = AnimationUtils.loadLayoutAnimation(context,R.anim.layout_animation).animation
@@ -382,10 +384,7 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
         val activity = this
 
         if(selectedCategory == "Все"){
-            binding.listRecycleView.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = TaskItemAdapter(liveList(searchQuery), activity)
-            }
+
             binding.listRecycleView.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = TaskItemAdapter(liveList(searchQuery), activity)
@@ -441,7 +440,7 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
     }
 
     override fun editTaskItem(taskItem: TaskItem) {
-        NewTaskSheet(taskItem,taskList).show(childFragmentManager, "editTaskTag")
+        NewTaskSheet(taskItem,taskList,null).show(childFragmentManager, "editTaskTag")
     }
 
     override fun completeTaskItem(taskItem: TaskItem) {

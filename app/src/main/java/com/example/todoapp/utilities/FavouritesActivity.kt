@@ -67,6 +67,10 @@ class FavouritesActivity : AppCompatActivity(), TaskItemClickListener, NoteItemC
 
         deleteSwipe()
 
+        binding.backFavNotesButton.setOnClickListener{
+            finish()
+        }
+
         val activeColor = binding.tasksMod.currentTextColor
         val greyColor = ContextCompat.getColor(applicationContext, R.color.grey)
 
@@ -305,7 +309,7 @@ class FavouritesActivity : AppCompatActivity(), TaskItemClickListener, NoteItemC
     }
 
     override fun editTaskItem(taskItem: TaskItem) {
-        NewTaskSheet(taskItem,taskList).show(this.supportFragmentManager, "editTaskTag")
+        NewTaskSheet(taskItem,taskList,null).show(this.supportFragmentManager, "editTaskTag")
     }
 
     override fun completeTaskItem(taskItem: TaskItem) {

@@ -31,7 +31,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random.Default.nextInt
 
-class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>) : BottomSheetDialogFragment() {
+class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>, val dueSetDate: String?) : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentNewTaskSheetBinding
     private var dueTime: LocalTime? = null
@@ -83,6 +83,11 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>) :
             taskCat = taskItem!!.category!!
             binding.categoryMenu.setText(taskCat)
         }else{
+            if(dueSetDate!= null){
+                dueDate = dueSetDate
+                binding.DueText.text = "Отложено на: " + dueDate
+            }
+
             binding.priorityMenu.setText("Обычный")
             binding.categoryMenu.setText("Без категории")
         }

@@ -1,56 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/calendarFrag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.calendar.fragment.CalendarFragment"
-    android:id="@+id/calendarFrag">
-    
+    tools:context=".ui.calendar.fragment.CalendarFragment">
+
     <LinearLayout
+        android:id="@+id/monthViewLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <ImageView
-            android:layout_width="0dp"
             android:id="@+id/prevArr"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_gravity="center_vertical"
             app:srcCompat="@drawable/prev_arr_24"
-            android:layout_margin="4dp"
-            app:tint="?colorOnSecondary"
-            />
+            app:tint="?colorOnSecondary" />
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
-            android:text="Hello"
-            android:textSize="22dp"
             android:id="@+id/calendarText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Hello"
             android:textAlignment="center"
-            app:tint="?colorOnSecondary"/>
+            android:textSize="22dp"
+            app:tint="?colorOnSecondary" />
 
         <ImageView
-            android:layout_width="0dp"
             android:id="@+id/nextArr"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             app:srcCompat="@drawable/next_arr_24"
-            android:layout_margin="4dp"
-            app:tint="?colorOnSecondary"
-            />
+            app:tint="?colorOnSecondary" />
 
         <ImageView
             android:id="@+id/weekViewArr"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             app:srcCompat="@drawable/arrow_up_24"
             app:tint="?colorOnSecondary" />
@@ -59,9 +60,14 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/weekDaysLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/monthViewLayout">
 
         <TextView
             android:layout_width="0dp"
@@ -70,7 +76,7 @@
             android:text="ПН"
             android:textAlignment="center"
             android:textColor="@color/checkedColor"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="0dp"
@@ -79,7 +85,7 @@
             android:text="ВТ"
             android:textAlignment="center"
             android:textColor="@color/checkedColor"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="0dp"
@@ -88,7 +94,7 @@
             android:text="СР"
             android:textAlignment="center"
             android:textColor="@color/checkedColor"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="0dp"
@@ -97,7 +103,7 @@
             android:text="ЧТ"
             android:textAlignment="center"
             android:textColor="@color/checkedColor"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="0dp"
@@ -106,7 +112,7 @@
             android:text="ПТ"
             android:textAlignment="center"
             android:textColor="@color/checkedColor"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="0dp"
@@ -115,7 +121,7 @@
             android:text="СБ"
             android:textAlignment="center"
             android:textColor="@color/checkedColor"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="0dp"
@@ -124,30 +130,54 @@
             android:text="ВС"
             android:textAlignment="center"
             android:textColor="@color/checkedColor"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/calendarView"
-        android:layout_marginEnd="2dp"/>
+        android:layout_marginEnd="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/weekDaysLayout"/>
 
     <TextView
+        android:id="@+id/descText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/descText"
-        android:text=""
-        android:textSize="21dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="4dp"
-        />
+        android:text=""
+        android:textSize="21dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/calendarView"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/listRecycleView"
-        android:layout_marginBottom="68dp"
-        />
-</LinearLayout>
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:foregroundGravity="top"
+        android:layout_marginBottom="68dp"/>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/newTaskButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="18dp"
+        android:layout_marginBottom="90dp"
+        android:backgroundTint="?attr/colorPrimary"
+        android:padding="5dp"
+        android:textColor="?colorOnPrimary"
+        app:icon="@drawable/icon_add"
+        app:iconTint="?colorOnPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

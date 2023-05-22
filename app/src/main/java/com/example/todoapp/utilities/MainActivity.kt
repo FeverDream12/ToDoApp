@@ -6,6 +6,9 @@ import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -15,6 +18,10 @@ import com.example.todoapp.channelId
 import com.example.todoapp.databinding.ActivityMainBinding
 import com.example.todoapp.repeatedTasks.RepeatedTasksActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import java.io.File
+import java.io.FileInputStream
 
 class MainActivity : AppCompatActivity(){
 
@@ -23,6 +30,25 @@ class MainActivity : AppCompatActivity(){
     private val notificationPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+
+        val path = applicationContext.filesDir
+        val letDirectory = File(path, "LET")
+        letDirectory.mkdirs()
+
+        val settingsFile = File(letDirectory, "settings.txt")
+
+        if(settingsFile.exists()){
+            val themeMode = FileInputStream(settingsFile).bufferedReader().use { it.readText() }
+
+            if(themeMode == "night"){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }else if (themeMode == "day"){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
+
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -64,6 +90,29 @@ class MainActivity : AppCompatActivity(){
             true
         }
 
+        binding.modeSwitch.setOnClickListener{
+            if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
+                settingsFile.delete()
+                settingsFile.appendText("day")
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            } else {
+                settingsFile.delete()
+                settingsFile.appendText("night")
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+        }
+
+        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
+            binding.modeText.text = "Тёмная"
+            binding.modeImg.rotation = 180f
+            binding.modeImg.setImageResource(R.drawable.mode_night_24)
+            binding.modeImg.setColorFilter(ContextCompat.getColor(applicationContext,R.color.mode))
+        }else{
+            binding.modeText.text = "Светлая"
+            binding.modeImg.setImageResource(R.drawable.mode_sun_24)
+            binding.modeImg.setColorFilter(ContextCompat.getColor(applicationContext,R.color.mode))
+        }
+
         requestNotificationPermission()
         createNotificationChannel()
     }
@@ -85,19 +134,5 @@ class MainActivity : AppCompatActivity(){
         notificationPermissionLauncher.launch(
             android.Manifest.permission.SCHEDULE_EXACT_ALARM
         )
-        notificationPermissionLauncher.launch(
-            android.Manifest.permission.RECORD_AUDIO
-        )
-        notificationPermissionLauncher.launch(
-            android.Manifest.permission.MANAGE_EXTERNAL_STORAGE
-        )
-        notificationPermissionLauncher.launch(
-            android.Manifest.permission.READ_EXTERNAL_STORAGE
-        )
-        notificationPermissionLauncher.launch(
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
-
-
     }
 }

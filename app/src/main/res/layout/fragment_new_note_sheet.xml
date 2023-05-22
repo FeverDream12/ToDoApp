@@ -39,6 +39,7 @@
         android:id="@+id/editNoteText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:foregroundGravity="top"
         android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="Текст"
@@ -47,8 +48,8 @@
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="@+id/editTittleText"
         app:layout_constraintStart_toStartOf="@+id/editTittleText"
-        app:layout_constraintTop_toBottomOf="@+id/editTittleText"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@+id/editTittleText" />
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/doneButton"

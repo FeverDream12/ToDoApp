@@ -8,4 +8,5 @@
     <style name="Theme.ToDoApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.ToDoApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

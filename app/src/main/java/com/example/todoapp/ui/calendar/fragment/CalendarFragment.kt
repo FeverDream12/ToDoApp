@@ -50,6 +50,7 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
     private var selectedWeekDay: String = LocalDate.now().dayOfMonth.toString()
     private var selectedDay: String = LocalDate.now().dayOfMonth.toString()
     private var selectedDateString: String = LocalDate.now().toString()
+    private var setDateString: String = LocalDate.now().toString()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentCalendarBinding.inflate(inflater, container, false)
@@ -102,6 +103,11 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
             nextMonthAction()
         }
 
+        binding.newTaskButton.setOnClickListener{
+            NewTaskSheet(null,taskList, setDateString).show(childFragmentManager, "newTaskTag")
+        }
+
+
         setMonthView()
         setDate(selectedWeekDay)
 
@@ -117,7 +123,9 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
     }
 
     private fun setMonthView() {
-        binding.calendarText.text = monthYearFromDate(selectedDate)
+
+        setMonthText()
+
         val daysInMonth: ArrayList<String> = daysInMonthArray(selectedDate)
 
         val activity = this
@@ -130,8 +138,34 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
         }
     }
 
+    private fun setMonthText() {
+        val month = selectedDate.monthValue
+        val year = selectedDate.year
+
+        var monthStr = ""
+
+        when(month){
+            1 -> monthStr = "Январь"
+            2 -> monthStr = "Февраль"
+            3 -> monthStr = "Март"
+            4 -> monthStr = "Апрель"
+            5 -> monthStr = "Май"
+            6 -> monthStr = "Июнь"
+            7 -> monthStr = "Июль"
+            8 -> monthStr = "Август"
+            9 -> monthStr = "Сентябрь"
+            10 -> monthStr = "Октябрь"
+            11 -> monthStr = "Ноябрь"
+            12 -> monthStr = "Декабрь"
+        }
+
+        binding.calendarText.text = "$monthStr, $year"
+    }
+
     private fun setWeekView(day: String) {
-        binding.calendarText.text = monthYearFromDate(selectedDate)
+
+        setMonthText()
+
         val daysInMonth: ArrayList<String> = daysInMonthArray(selectedDate)
 
         val daysInWeek: ArrayList<String> = daysInWeekArray(daysInMonth, day)
@@ -252,6 +286,8 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
                 dateStr= "" + YearMonth.from(selectedDate) + "-" + date
             }
 
+            setDateString = dateStr
+
             var count : Int = 0
             liveList().forEach {
                 if(it.dueDate == dateStr){
@@ -305,7 +341,7 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
     }
 
     override fun editTaskItem(taskItem: TaskItem) {
-        NewTaskSheet(taskItem,taskList).show(childFragmentManager, "editTaskTag")
+        NewTaskSheet(taskItem,taskList,null).show(childFragmentManager, "editTaskTag")
     }
 
     override fun completeTaskItem(taskItem: TaskItem) {

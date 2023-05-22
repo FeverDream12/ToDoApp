@@ -28,5 +28,6 @@
     <color name="priority_0">#0bbd61</color>
     <color name="priority_1">#ffe600</color>
     <color name="priority_2">#F64B4B</color>
+    <color name="mode">#ffdd3e</color>
 
 </resources>

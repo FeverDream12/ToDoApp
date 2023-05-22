@@ -183,7 +183,7 @@ class RepeatedTasksActivity : AppCompatActivity(), RepeatedTaskItemClickListener
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
 
-                val item = repeatedTaskList[position]
+                val item = selectedDayList(selectedDay.dayOfWeek.value)[position]
 
                 when (direction){
                     ItemTouchHelper.LEFT ->{
