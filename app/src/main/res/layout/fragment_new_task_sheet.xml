@@ -140,19 +140,24 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:foregroundGravity="center"
-            android:backgroundTint="?colorPrimaryVariant"
-            android:layout_marginStart="16dp"
+            android:background="@null"
+            android:layout_marginStart="8dp"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
             app:srcCompat="@drawable/calendar_24"
-            />
+            app:tint="?colorPrimary" />
 
         <ImageButton
             android:id="@+id/timePickerButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:foregroundGravity="center"
-            android:backgroundTint="?colorPrimaryVariant"
+            android:background="@null"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
             android:layout_marginStart="2dp"
-            app:srcCompat="@drawable/time_24" />
+            app:srcCompat="@drawable/time_24"
+            app:tint="?colorPrimary" />
 
         <ImageButton
             android:id="@+id/notifButton"
@@ -160,8 +165,11 @@
             android:visibility="gone"
             android:layout_height="48dp"
             android:foregroundGravity="center"
-            android:backgroundTint="?colorPrimaryVariant"
+            android:background="@null"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
             android:layout_marginStart="2dp"
+            app:tint="?colorPrimary"
             app:srcCompat="@drawable/notifications_black_24dp" />
 
         <com.google.android.material.button.MaterialButton

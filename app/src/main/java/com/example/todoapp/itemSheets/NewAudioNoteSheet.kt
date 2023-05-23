@@ -10,9 +10,11 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.speech.tts.TextToSpeech
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import com.example.todoapp.databinding.FragmentNewAudioNoteSheetBinding
 import com.example.todoapp.ui.notes.AudioNoteItem.AudioNoteItem
@@ -52,6 +54,13 @@ class NewAudioNoteSheet(var audioNoteItem: AudioNoteItem?) : BottomSheetDialogFr
         auth = FirebaseAuth.getInstance()
         databaseRef = FirebaseDatabase.getInstance().reference.child("AudioNoteItems").child(auth.currentUser?.uid.toString())
 
+        if(audioNoteItem != null){
+            binding.recBtn.visibility = ImageButton.GONE
+            binding.taskTitle.text = "Изменить"
+            val editable = Editable.Factory.getInstance()
+            binding.editTittleText.text = editable.newEditable(audioNoteItem!!.title)
+        }
+
         binding.recBtn.setOnClickListener{
             if(recStatus != "Recording"){
 
@@ -85,38 +94,48 @@ class NewAudioNoteSheet(var audioNoteItem: AudioNoteItem?) : BottomSheetDialogFr
         }
 
         binding.saveButton.setOnClickListener{
-            if(recStatus == "Done"){
+            if(recStatus == "Done" || audioNoteItem != null){
                 saveAction()
             }
         }
 
     }
 
+    private fun updateItem(audioNoteItem: AudioNoteItem) {
+        val map = HashMap<String, Any>()
+        map[audioNoteItem.id.toString()] = audioNoteItem
+        databaseRef.updateChildren(map)
+    }
+
     private fun saveAction() {
 
-        noteUrl = "error"
-        storageRef = FirebaseStorage.getInstance().reference.child("AudioNotes").child(auth.currentUser?.uid.toString())
-        val formatter = SimpleDateFormat("EEE, d MMM yyyy HH:mm")
+        if(audioNoteItem == null){
+            noteUrl = "error"
+            storageRef = FirebaseStorage.getInstance().reference.child("AudioNotes").child(auth.currentUser?.uid.toString())
+            val formatter = SimpleDateFormat("EEE, d MMM yyyy HH:mm")
 
-        val audioRef = storageRef.child(Random.nextInt(0, 100000).toString() + ".mp3")
+            val audioRef = storageRef.child(Random.nextInt(0, 100000).toString() + ".mp3")
 
-        binding.saveButton.text = "Сохранение..."
+            binding.saveButton.text = "Сохранение..."
 
-        audioRef.putFile(Uri.fromFile(File(getPath()))).addOnSuccessListener { taskSnapshot ->
-            noteUrl = audioRef.toString()
+            audioRef.putFile(Uri.fromFile(File(getPath()))).addOnSuccessListener { taskSnapshot ->
+                noteUrl = audioRef.toString()
 
-            val title = binding.editTittleText.text.toString()
-            val date = formatter.format(Date())
+                val title = binding.editTittleText.text.toString()
+                val date = formatter.format(Date())
 
-            val newAudioNote = AudioNoteItem(title,date,"false",noteUrl)
+                val newAudioNote = AudioNoteItem(title,date,"false",noteUrl)
 
-            val noteId = databaseRef.push().key!!
-            databaseRef.child(noteId).setValue(newAudioNote)
+                val noteId = databaseRef.push().key!!
+                databaseRef.child(noteId).setValue(newAudioNote)
 
+                dismiss()
+            }
+        }else{
+            audioNoteItem!!.title = binding.editTittleText.text.toString()
+            updateItem(audioNoteItem!!)
             dismiss()
-
         }
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {

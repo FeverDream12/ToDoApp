@@ -345,6 +345,23 @@ class FavouritesActivity : AppCompatActivity(), TaskItemClickListener, NoteItemC
         updateTaskItem(taskItem)
     }
 
+    override fun rescheduleTaskItem(taskItem: TaskItem, time: String) {
+        when(time){
+            "day" ->{
+                taskItem.dueDate = LocalDate.parse(taskItem.dueDate).plusDays(1).toString()
+                updateTaskItem(taskItem)
+            }
+            "week" ->{
+                taskItem.dueDate = LocalDate.parse(taskItem.dueDate).plusWeeks(1).toString()
+                updateTaskItem(taskItem)
+            }
+            "month" ->{
+                taskItem.dueDate = LocalDate.parse(taskItem.dueDate).plusMonths(1).toString()
+                updateTaskItem(taskItem)
+            }
+        }
+    }
+
     private fun updateTaskItem(taskItem: TaskItem) {
         val map = HashMap<String, Any>()
         map[taskItem.id.toString()] = taskItem
@@ -391,6 +408,10 @@ class FavouritesActivity : AppCompatActivity(), TaskItemClickListener, NoteItemC
 
 
     override fun deleteAudioNoteItem(audioNoteItem: AudioNoteItem) {
+        audioNotesDatabaseRef.child(audioNoteItem.id.toString()).removeValue()
+    }
+
+    override fun editAudioNoteItem(audioNoteItem: AudioNoteItem) {
         audioNotesDatabaseRef.child(audioNoteItem.id.toString()).removeValue()
     }
 

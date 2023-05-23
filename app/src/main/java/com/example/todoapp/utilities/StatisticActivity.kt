@@ -172,6 +172,10 @@ class StatisticActivity : AppCompatActivity(), TaskItemClickListener {
         //
     }
 
+    override fun rescheduleTaskItem(taskItem: TaskItem, time: String) {
+        //
+    }
+
     private fun deleteSwipe(){
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             0,

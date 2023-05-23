@@ -10,7 +10,7 @@
     <item
         android:id="@+id/repTasks"
         android:icon="@drawable/rep_tasks_24"
-        android:title="Повторяемые задачи"/>
+        android:title="Еженедельные"/>
 
     <item
         android:id="@+id/nav_fav"

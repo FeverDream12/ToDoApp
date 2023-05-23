@@ -5,10 +5,12 @@
         android:id="@+id/hideCompleteTasks"
         android:title="Скрыть выполненные задачи"
         android:icon="@drawable/hide_24"
+        android:iconTint="@color/CircleColor"
         />
 
     <item
         android:icon="@drawable/sort_24"
+        android:iconTint="@color/CircleColor"
         android:title="Сортировка">
 
         <menu>
@@ -77,5 +79,6 @@
         android:id="@+id/searchTasks"
         android:title="Поиск"
         android:icon="@drawable/search_24"
+        android:iconTint="@color/CircleColor"
         />
 </menu>

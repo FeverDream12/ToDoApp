@@ -447,6 +447,23 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
         updateItem(taskItem)
     }
 
+    override fun rescheduleTaskItem(taskItem: TaskItem, time: String) {
+        when(time){
+            "day" ->{
+                taskItem.dueDate = LocalDate.parse(taskItem.dueDate).plusDays(1).toString()
+                updateItem(taskItem)
+            }
+            "week" ->{
+                taskItem.dueDate = LocalDate.parse(taskItem.dueDate).plusWeeks(1).toString()
+                updateItem(taskItem)
+            }
+            "month" ->{
+                taskItem.dueDate = LocalDate.parse(taskItem.dueDate).plusMonths(1).toString()
+                updateItem(taskItem)
+            }
+        }
+    }
+
     private fun updateItem(taskItem: TaskItem) {
         val map = HashMap<String, Any>()
         map[taskItem.id.toString()] = taskItem

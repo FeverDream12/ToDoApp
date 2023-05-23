@@ -120,7 +120,7 @@ class TaskItemViewHolder(
 
     private fun popupMenu(taskItem: TaskItem) {
         val popupMenu = PopupMenu(context,binding.taskCellContainer)
-        popupMenu.inflate(R.menu.pop_up_menu)
+        popupMenu.inflate(R.menu.pop_up_task_menu)
         popupMenu.setForceShowIcon(true)
 
         popupMenu.setOnMenuItemClickListener {
@@ -134,6 +134,18 @@ class TaskItemViewHolder(
                     context.startActivity(chooser)
 
                         //clickListener.deleteTaskItem(taskItem)
+                    true
+                }
+                R.id.day ->{
+                    clickListener.rescheduleTaskItem(taskItem,"day")
+                    true
+                }
+                R.id.week ->{
+                    clickListener.rescheduleTaskItem(taskItem,"week")
+                    true
+                }
+                R.id.month ->{
+                    clickListener.rescheduleTaskItem(taskItem,"month")
                     true
                 }
                 else -> {

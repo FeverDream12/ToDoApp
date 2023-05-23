@@ -40,6 +40,10 @@ class AudioNoteItemViewHolder(
             binding.favourite.visibility = ImageButton.VISIBLE
         }
 
+        binding.audioNotesCard.setOnClickListener{
+            clickListener.editAudioNoteItem(audioNoteItem)
+        }
+
         auth = FirebaseAuth.getInstance()
         databaseRef = FirebaseDatabase.getInstance().reference.child("AudioNoteItems").child(auth.currentUser?.uid.toString())
         storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(audioNoteItem.audioUrl.toString())

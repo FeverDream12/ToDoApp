@@ -13,15 +13,14 @@ class AuthActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Firebase.database.setPersistenceEnabled(true)
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
         val path = applicationContext.filesDir
         val letDirectory = File(path, "LET")
         letDirectory.mkdirs()
 
         val settingsFile = File(letDirectory, "settings.txt")
+        val exitFile = File(letDirectory, "exit.txt")
 
         if(settingsFile.exists()){
             val themeMode = FileInputStream(settingsFile).bufferedReader().use { it.readText() }
@@ -31,6 +30,12 @@ class AuthActivity : AppCompatActivity() {
             }else if (themeMode == "day"){
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+
+        if(!exitFile.exists()){
+            Firebase.database.setPersistenceEnabled(true)
         }
 
         super.onCreate(savedInstanceState)

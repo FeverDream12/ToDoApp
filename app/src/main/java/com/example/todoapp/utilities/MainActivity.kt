@@ -2,8 +2,10 @@ package com.example.todoapp.utilities
 
 import android.app.*
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -29,15 +31,24 @@ class MainActivity : AppCompatActivity(){
     private lateinit var auth: FirebaseAuth
     private val notificationPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
+        //Firebase.database.setPersistenceEnabled(true)
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        super.onCreate(savedInstanceState)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        auth = FirebaseAuth.getInstance()
+        setContentView(binding.root)
 
         val path = applicationContext.filesDir
         val letDirectory = File(path, "LET")
         letDirectory.mkdirs()
 
         val settingsFile = File(letDirectory, "settings.txt")
+        val exitFile = File(letDirectory, "exit.txt")
+
+        exitFile.delete()
 
         if(settingsFile.exists()){
             val themeMode = FileInputStream(settingsFile).bufferedReader().use { it.readText() }
@@ -47,13 +58,9 @@ class MainActivity : AppCompatActivity(){
             }else if (themeMode == "day"){
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
-
-        super.onCreate(savedInstanceState)
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        auth = FirebaseAuth.getInstance()
-        setContentView(binding.root)
 
         val navView: BottomNavigationView = binding.navView
 
@@ -85,6 +92,9 @@ class MainActivity : AppCompatActivity(){
                     auth.signOut()
                     val int = Intent(this, AuthActivity::class.java)
                     startActivity(int)
+                    exitFile.delete()
+                    exitFile.appendText("exit")
+                    finish()
                 }
             }
             true
@@ -107,7 +117,7 @@ class MainActivity : AppCompatActivity(){
             binding.modeImg.rotation = 180f
             binding.modeImg.setImageResource(R.drawable.mode_night_24)
             binding.modeImg.setColorFilter(ContextCompat.getColor(applicationContext,R.color.mode))
-        }else{
+        }else if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO){
             binding.modeText.text = "Светлая"
             binding.modeImg.setImageResource(R.drawable.mode_sun_24)
             binding.modeImg.setColorFilter(ContextCompat.getColor(applicationContext,R.color.mode))

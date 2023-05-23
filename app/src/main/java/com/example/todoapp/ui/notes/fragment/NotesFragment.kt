@@ -219,7 +219,7 @@ class NotesFragment : Fragment(), NoteItemClickListener, AudioNoteItemClickListe
     }
 
     override fun editNoteItem(noteItem: NoteItem) {
-        NewNoteSheet(noteItem).show(childFragmentManager, "editTaskTag")
+        NewNoteSheet(noteItem).show(childFragmentManager, "editNoteTag")
     }
 
     override fun deleteNoteItem(noteItem: NoteItem) {
@@ -249,6 +249,10 @@ class NotesFragment : Fragment(), NoteItemClickListener, AudioNoteItemClickListe
 
     override fun deleteAudioNoteItem(audioNoteItem: AudioNoteItem) {
        audioNotesDatabaseRef.child(audioNoteItem.id.toString()).removeValue()
+    }
+
+    override fun editAudioNoteItem(audioNoteItem: AudioNoteItem) {
+        NewAudioNoteSheet(audioNoteItem).show(childFragmentManager, "editAudioNoteTag")
     }
 
     override fun setAudioNoteFavorite(audioNoteItem: AudioNoteItem) {

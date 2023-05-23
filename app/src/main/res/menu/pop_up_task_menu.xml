@@ -5,5 +5,28 @@
         android:id="@+id/share_task"
         android:title="Поделиться"
         android:icon="@drawable/share_24"
+        android:iconTint="@color/CircleColor"
         />
+
+    <item android:title="Перенести на..."
+        android:icon="@drawable/schedule_24"
+        android:iconTint="@color/CircleColor">
+
+        <menu>
+
+            <item
+                android:id="@+id/day"
+                android:title="День"/>
+
+            <item
+                android:id="@+id/week"
+                android:title="Неделю"/>
+
+            <item
+                android:id="@+id/month"
+                android:title="Месяц"/>
+
+        </menu>
+
+    </item>
 </menu>

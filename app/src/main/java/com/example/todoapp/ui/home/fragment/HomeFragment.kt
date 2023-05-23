@@ -34,6 +34,8 @@ import com.example.todoapp.ui.home.TaskItem.TaskItemClickListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
@@ -62,6 +64,7 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
     private lateinit var categories : ArrayList<String>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
         databaseRef = FirebaseDatabase.getInstance().reference.child("TaskItems").child(auth.currentUser?.uid.toString())
@@ -353,8 +356,21 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
         }
     }
 
+    private fun getPriority(priority: String) : String{
+        var priorityStr = ""
+
+        when(priority){
+            "0" -> priorityStr = "Обычный"
+            "1" -> priorityStr = "Средний"
+            "2" -> priorityStr = "Высокий"
+        }
+
+        return priorityStr
+    }
+
     private fun scheduleNotification(task: TaskItem) {
         val intent = Intent(requireContext(), NotificationReceiver::class.java)
+
         val title = task.name
         val message = task.desc
 
@@ -474,6 +490,23 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
             taskItem.isFavourite = "false"
         }
         updateItem(taskItem)
+    }
+
+    override fun rescheduleTaskItem(taskItem: TaskItem, time: String) {
+        when(time){
+            "day" ->{
+                taskItem.dueDate = LocalDate.parse(taskItem.dueDate).plusDays(1).toString()
+                updateItem(taskItem)
+            }
+            "week" ->{
+                taskItem.dueDate = LocalDate.parse(taskItem.dueDate).plusWeeks(1).toString()
+                updateItem(taskItem)
+            }
+            "month" ->{
+                taskItem.dueDate = LocalDate.parse(taskItem.dueDate).plusMonths(1).toString()
+                updateItem(taskItem)
+            }
+        }
     }
 
     private fun updateItem(taskItem: TaskItem) {
