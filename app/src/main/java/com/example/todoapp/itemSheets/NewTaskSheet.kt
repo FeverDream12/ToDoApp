@@ -138,6 +138,9 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>, v
             }
             if(taskItem!!.dueTimeString != "null"){
                 binding.notifButton.visibility = ImageButton.VISIBLE
+                if(taskItem!!.notificationId != 0){
+                    binding.notifButton.setImageResource(R.drawable.notification_off_24)
+                }
             }
         }else{
             binding.taskTitle.text = "Новая задача"
@@ -156,9 +159,11 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>, v
                 gotNot = !gotNot
 
                 if(gotNot){
-                    Toast.makeText(context, "Уведомление установленно", Toast.LENGTH_SHORT).show()
+                    binding.notifButton.setImageResource(R.drawable.notification_off_24)
+                    Toast.makeText(context, "Уведомление установлено", Toast.LENGTH_SHORT).show()
                 }else{
                     Toast.makeText(context, "Уведомление отменено", Toast.LENGTH_SHORT).show()
+                    binding.notifButton.setImageResource(R.drawable.notifications_black_24dp)
                 }
 
             }
