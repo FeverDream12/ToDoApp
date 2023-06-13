@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="?colorOnPrimary"
-    tools:context=".ui.home.fragment.HomeFragment">
+    tools:context=".mainMenu.home.fragment.HomeFragment">
 
     <LinearLayout
         android:id="@+id/topMenuView"

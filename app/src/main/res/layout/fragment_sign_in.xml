@@ -23,7 +23,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="360dp"
-        android:layout_height="312dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="250dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="20dp"
@@ -139,14 +139,39 @@
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="25dp"
                 android:text="Войти"
                 android:textSize="15dp"
                 app:cornerRadius="15dp" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Или"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/googleLoginButton"
+                android:layout_width="320dp"
+                app:cornerRadius="15dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="Вход через Google"
+                android:textColor="@color/black"
+                android:textStyle="normal"
+                android:textAllCaps="false"
+                app:icon="@drawable/googlelogo"
+                app:iconSize="20dp"
+                app:iconTint="@null"
+                android:layout_marginBottom="15dp"
+                app:layout_constraintStart_toStartOf="parent"/>
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
 
     <LinearLayout
         android:layout_width="wrap_content"

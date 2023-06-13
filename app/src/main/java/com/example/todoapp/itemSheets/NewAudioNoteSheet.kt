@@ -1,15 +1,10 @@
 package com.example.todoapp.itemSheets
 
 import android.content.ContextWrapper
-import android.content.Intent
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.speech.RecognitionListener
-import android.speech.RecognizerIntent
-import android.speech.SpeechRecognizer
-import android.speech.tts.TextToSpeech
 import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
@@ -17,20 +12,14 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import com.example.todoapp.databinding.FragmentNewAudioNoteSheetBinding
-import com.example.todoapp.ui.notes.AudioNoteItem.AudioNoteItem
-import com.example.todoapp.ui.notes.NoteItem.NoteItem
-import com.google.android.gms.tasks.OnSuccessListener
+import com.example.todoapp.mainMenu.notes.AudioNoteItem.AudioNoteItem
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
 import java.io.File
-import java.io.IOError
-import java.io.IOException
-import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.random.Random

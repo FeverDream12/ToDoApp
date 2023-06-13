@@ -8,15 +8,12 @@ import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import com.example.todoapp.databinding.FragmentNewRepeatedTaskSheetBinding
 import com.example.todoapp.repeatedTasks.RepeatedTaskItem
-import com.example.todoapp.ui.home.TaskItem.TaskItem
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import java.time.LocalDate
 import java.time.LocalTime
 import java.util.HashMap
-import kotlin.random.Random
 
 class NewRepeatedTaskSheet(var repeatedTask: RepeatedTaskItem?) : BottomSheetDialogFragment()  {
 
@@ -50,6 +47,7 @@ class NewRepeatedTaskSheet(var repeatedTask: RepeatedTaskItem?) : BottomSheetDia
             binding.name.text = editable.newEditable(repeatedTask!!.name)
             binding.desc.text = editable.newEditable(repeatedTask!!.desc)
             daysOfWeek = repeatedTask!!.daysOfWeek!!
+            binding.taskTitle.text = "Изменить задачу"
             binding.timePicker.hour = LocalTime.parse(repeatedTask!!.dueTimeString!!).hour
             binding.timePicker.minute = LocalTime.parse(repeatedTask!!.dueTimeString!!).minute
 

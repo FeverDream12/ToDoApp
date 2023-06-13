@@ -1,6 +1,5 @@
 package com.example.todoapp
 
-import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
@@ -8,7 +7,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
-import com.example.todoapp.ui.home.TaskItem.TaskItem
+import com.example.todoapp.mainMenu.home.TaskItem.TaskItem
 import com.example.todoapp.utilities.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot

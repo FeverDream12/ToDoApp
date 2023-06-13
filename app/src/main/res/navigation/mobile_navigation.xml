@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.todoapp.ui.home.fragment.HomeFragment"
+        android:name="com.example.todoapp.mainMenu.home.fragment.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.todoapp.ui.calendar.fragment.CalendarFragment"
+        android:name="com.example.todoapp.mainMenu.calendar.fragment.CalendarFragment"
         android:label="@string/title_calendar"
         tools:layout="@layout/fragment_calendar" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.todoapp.ui.notes.fragment.NotesFragment"
+        android:name="com.example.todoapp.mainMenu.notes.fragment.NotesFragment"
         android:label="@string/title_notes"
         tools:layout="@layout/fragment_notes" />
 </navigation>

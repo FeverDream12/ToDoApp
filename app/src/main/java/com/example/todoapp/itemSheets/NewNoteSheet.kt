@@ -5,7 +5,7 @@ import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.todoapp.ui.notes.NoteItem.NoteItem
+import com.example.todoapp.mainMenu.notes.NoteItem.NoteItem
 import com.example.todoapp.databinding.FragmentNewNoteSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth

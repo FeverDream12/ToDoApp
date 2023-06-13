@@ -3,8 +3,7 @@ package com.example.todoapp.repeatedTasks
 import android.content.Context
 import androidx.core.content.ContextCompat
 import com.example.todoapp.R
-import com.example.todoapp.ui.home.TaskItem.TaskItem
-import java.time.LocalDate
+import com.example.todoapp.mainMenu.home.TaskItem.TaskItem
 import java.time.LocalTime
 
 class RepeatedTaskItem(

@@ -5,18 +5,14 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.R
 import com.example.todoapp.databinding.ActivityStatisticBinding
-import com.example.todoapp.ui.home.TaskItem.*
-import com.github.mikephil.charting.charts.PieChart
+import com.example.todoapp.mainMenu.home.TaskItem.*
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -25,8 +21,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
-import java.text.DecimalFormat
-import kotlin.math.absoluteValue
 
 class StatisticActivity : AppCompatActivity(), TaskItemClickListener {
 
@@ -158,23 +152,17 @@ class StatisticActivity : AppCompatActivity(), TaskItemClickListener {
         return filteredTaskList
     }
 
-    override fun editTaskItem(taskItem: TaskItem) {
-    }
+    override fun editTaskItem(taskItem: TaskItem) {}
 
-    override fun completeTaskItem(taskItem: TaskItem) {
-    }
+    override fun completeTaskItem(taskItem: TaskItem) {}
 
     override fun deleteTaskItem(taskItem: TaskItem) {
         databaseRef.child(taskItem.id.toString()).removeValue()
     }
 
-    override fun setTaskFavorite(taskItem: TaskItem) {
-        //
-    }
+    override fun setTaskFavorite(taskItem: TaskItem) {}
 
-    override fun rescheduleTaskItem(taskItem: TaskItem, time: String) {
-        //
-    }
+    override fun rescheduleTaskItem(taskItem: TaskItem, time: String) {}
 
     private fun deleteSwipe(){
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(

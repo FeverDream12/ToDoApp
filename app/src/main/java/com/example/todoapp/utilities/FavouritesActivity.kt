@@ -15,19 +15,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.NotificationReceiver
 import com.example.todoapp.R
 import com.example.todoapp.databinding.ActivityFavouritesBinding
+import com.example.todoapp.itemSheets.NewAudioNoteSheet
 import com.example.todoapp.itemSheets.NewNoteSheet
 import com.example.todoapp.itemSheets.NewTaskSheet
 import com.example.todoapp.messageExtra
 import com.example.todoapp.titleExtra
-import com.example.todoapp.ui.home.TaskItem.TaskItem
-import com.example.todoapp.ui.home.TaskItem.TaskItemAdapter
-import com.example.todoapp.ui.home.TaskItem.TaskItemClickListener
-import com.example.todoapp.ui.notes.AudioNoteItem.AudioNoteItem
-import com.example.todoapp.ui.notes.AudioNoteItem.AudioNoteItemAdapter
-import com.example.todoapp.ui.notes.AudioNoteItem.AudioNoteItemClickListener
-import com.example.todoapp.ui.notes.NoteItem.NoteItem
-import com.example.todoapp.ui.notes.NoteItem.NoteItemAdapter
-import com.example.todoapp.ui.notes.NoteItem.NoteItemClickListener
+import com.example.todoapp.mainMenu.home.TaskItem.TaskItem
+import com.example.todoapp.mainMenu.home.TaskItem.TaskItemAdapter
+import com.example.todoapp.mainMenu.home.TaskItem.TaskItemClickListener
+import com.example.todoapp.mainMenu.notes.AudioNoteItem.AudioNoteItem
+import com.example.todoapp.mainMenu.notes.AudioNoteItem.AudioNoteItemAdapter
+import com.example.todoapp.mainMenu.notes.AudioNoteItem.AudioNoteItemClickListener
+import com.example.todoapp.mainMenu.notes.NoteItem.NoteItem
+import com.example.todoapp.mainMenu.notes.NoteItem.NoteItemAdapter
+import com.example.todoapp.mainMenu.notes.NoteItem.NoteItemClickListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -412,7 +413,7 @@ class FavouritesActivity : AppCompatActivity(), TaskItemClickListener, NoteItemC
     }
 
     override fun editAudioNoteItem(audioNoteItem: AudioNoteItem) {
-        audioNotesDatabaseRef.child(audioNoteItem.id.toString()).removeValue()
+        NewAudioNoteSheet(audioNoteItem).show(this.supportFragmentManager, "editAudioNoteTag")
     }
 
     override fun setAudioNoteFavorite(audioNoteItem: AudioNoteItem) {

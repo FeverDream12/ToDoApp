@@ -15,11 +15,11 @@ import android.widget.ImageButton
 import android.widget.Toast
 import com.example.todoapp.NotificationReceiver
 import com.example.todoapp.R
-import com.example.todoapp.ui.home.TaskItem.TaskItem
+import com.example.todoapp.mainMenu.home.TaskItem.TaskItem
 import com.example.todoapp.databinding.FragmentNewTaskSheetBinding
 import com.example.todoapp.messageExtra
 import com.example.todoapp.titleExtra
-import com.example.todoapp.ui.home.TaskItem.TaskItem.Companion.timeFormatter
+import com.example.todoapp.mainMenu.home.TaskItem.TaskItem.Companion.timeFormatter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
@@ -183,9 +183,7 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>, v
                 val simpleDateFormat = SimpleDateFormat(myFormat, Locale.KOREA)
                 dueDate = simpleDateFormat.format(calendar.time)
             }
-
             DatePickerDialog(activity, datePicker, calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH) ).show()
-
         }
     }
 
@@ -256,7 +254,7 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>, v
     private fun saveAction() {
         val name = binding.name.text.toString()
         val desc = binding.desc.text.toString()
-        val dueTimeString = if(dueTime == null) "null" else TaskItem.timeFormatter.format(dueTime)
+        val dueTimeString = if(dueTime == null) "null" else timeFormatter.format(dueTime)
 
         if (otherCat && binding.myCategory.text.toString() != ""){
             taskCat = binding.myCategory.text.toString()

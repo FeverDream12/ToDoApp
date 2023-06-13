@@ -33,33 +33,37 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         init(view)
-        registerEvents()
-    }
-
-    private fun registerEvents() {
 
         binding.signInText.setOnClickListener{
             navController.navigate(R.id.action_signUpFragment_to_signInFragment)
         }
-        binding.signUpNextButton.setOnClickListener{
-            val email = binding.emailInput.text.toString().trim()
-            val pass = binding.passwordInput.text.toString().trim()
-            val repass = binding.passwordReInput.text.toString().trim()
 
-            if(email.isNotEmpty() && pass.isNotEmpty() && repass.isNotEmpty()){
-                if(pass == repass){
-                    auth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(
-                        OnCompleteListener {
-                            if(it.isSuccessful){
-                                Toast.makeText(context,"Успешная регистрация",Toast.LENGTH_SHORT).show()
-                                navController.navigate(R.id.action_signUpFragment_to_mainActivity)
-                                requireActivity().finish()
-                            }else{
-                                Toast.makeText(context,it.exception?.message,Toast.LENGTH_SHORT).show()
-                            }
+        binding.signUpNextButton.setOnClickListener{
+
+            registerEvents()
+        }
+
+    }
+
+    private fun registerEvents() {
+
+        val email = binding.emailInput.text.toString().trim()
+        val pass = binding.passwordInput.text.toString().trim()
+        val repass = binding.passwordReInput.text.toString().trim()
+
+        if(email.isNotEmpty() && pass.isNotEmpty() && repass.isNotEmpty()){
+            if(pass == repass){
+                auth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(
+                    OnCompleteListener {
+                        if(it.isSuccessful){
+                            Toast.makeText(context,"Успешная регистрация",Toast.LENGTH_SHORT).show()
+                            navController.navigate(R.id.action_signUpFragment_to_mainActivity)
+                            requireActivity().finish()
+                        }else{
+                            Toast.makeText(context,it.exception?.message,Toast.LENGTH_SHORT).show()
                         }
-                    )
-                }
+                    }
+                )
             }
         }
     }
