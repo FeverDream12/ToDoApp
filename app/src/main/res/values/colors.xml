@@ -29,5 +29,6 @@
     <color name="priority_1">#ffe600</color>
     <color name="priority_2">#F64B4B</color>
     <color name="mode">#ffdd3e</color>
+    <color name="categorySelected">#b1cdcd</color>
 
 </resources>

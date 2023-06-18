@@ -11,9 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.SearchView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -396,10 +398,26 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
                 layoutManager = LinearLayoutManager(context)
                 adapter = TaskItemAdapter(liveList(searchQuery), activity)
             }
+            if(liveList(searchQuery).size == 0){
+                binding.aranaraChill.visibility = ImageView.VISIBLE
+                binding.textChill.visibility = TextView.VISIBLE
+                binding.textChill.text = "Нет поставленных задач"
+            }else{
+                binding.aranaraChill.visibility = ImageView.GONE
+                binding.textChill.visibility = TextView.GONE
+            }
         }else{
             binding.listRecycleView.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = TaskItemAdapter(filteredList(selectedCategory,searchQuery), activity)
+            }
+            if(filteredList(selectedCategory,searchQuery).size == 0){
+                binding.aranaraChill.visibility = ImageView.VISIBLE
+                binding.textChill.visibility = TextView.VISIBLE
+                binding.textChill.text = "В данной категории еще нет задач"
+            }else{
+                binding.aranaraChill.visibility = ImageView.GONE
+                binding.textChill.visibility = TextView.GONE
             }
         }
     }
