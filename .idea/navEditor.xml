@@ -13,8 +13,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="557" />
-                            <option name="y" value="-118" />
+                            <option name="x" value="551" />
+                            <option name="y" value="-280" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -25,8 +25,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="151" />
-                            <option name="y" value="39" />
+                            <option name="x" value="-77" />
+                            <option name="y" value="69" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -41,6 +41,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_signInFragment_to_tutorialFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>
@@ -51,8 +56,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="389" />
-                            <option name="y" value="189" />
+                            <option name="x" value="273" />
+                            <option name="y" value="107" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -67,6 +72,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_signUpFragment_to_tutorialFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>
@@ -77,13 +87,39 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-148" />
-                            <option name="y" value="-97" />
+                            <option name="x" value="-432" />
+                            <option name="y" value="-197" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_splashFragment_to_mainActivity">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_splashFragment_to_signInFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="tutorialFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="461" />
+                            <option name="y" value="469" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_tutorialFragment_to_mainActivity">
                               <value>
                                 <LayoutPositions />
                               </value>

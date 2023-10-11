@@ -103,7 +103,7 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
         }
 
         binding.newTaskButton.setOnClickListener{
-            NewTaskSheet(null,taskList, setDateString).show(childFragmentManager, "newTaskTag")
+            NewTaskSheet(null,taskList, setDateString, null).show(childFragmentManager, "newTaskTag")
         }
 
 
@@ -340,7 +340,7 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
     }
 
     override fun editTaskItem(taskItem: TaskItem) {
-        NewTaskSheet(taskItem,taskList,null).show(childFragmentManager, "editTaskTag")
+        NewTaskSheet(taskItem,taskList,null, null).show(childFragmentManager, "editTaskTag")
     }
 
     override fun completeTaskItem(taskItem: TaskItem) {
@@ -461,6 +461,10 @@ class CalendarFragment : Fragment(), CalendarItemClickListener, TaskItemClickLis
                 updateItem(taskItem)
             }
         }
+    }
+
+    override fun copyTaskItem(taskItem: TaskItem) {
+        NewTaskSheet(taskItem,taskList,null,"copy").show(childFragmentManager, "copyTaskTag")
     }
 
     private fun updateItem(taskItem: TaskItem) {

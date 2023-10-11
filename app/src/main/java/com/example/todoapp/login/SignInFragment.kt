@@ -20,6 +20,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import java.io.File
+import java.io.FileInputStream
 
 class SignInFragment : Fragment() {
 
@@ -27,6 +29,7 @@ class SignInFragment : Fragment() {
     private lateinit var googleSignClient: GoogleSignInClient
     private lateinit var navController: NavController
     private lateinit var binding: FragmentSignInBinding
+    private var skipTutorial = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
 
@@ -40,11 +43,19 @@ class SignInFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val path = requireContext().filesDir
+        val letDirectory = File(path, "LET")
+        letDirectory.mkdirs()
+        val tutorialFile = File(letDirectory, "tutorial.txt")
+
+        if(tutorialFile.exists()) {
+            val skip = FileInputStream(tutorialFile).bufferedReader().use { it.readText() }
+            skipTutorial = skip == "skip"
+        }
+
         binding.signUpText.setOnClickListener{
             navController.navigate(R.id.action_signInFragment_to_signUpFragment)
         }
-
-
 
         init(view)
         googleLogin()
@@ -76,8 +87,12 @@ class SignInFragment : Fragment() {
                         auth.signInWithCredential(credential).addOnCompleteListener{
                             if(it.isSuccessful){
                                 Toast.makeText(context,"Успешный вход", Toast.LENGTH_SHORT).show()
-                                navController.navigate(R.id.action_signInFragment_to_mainActivity)
-                                requireActivity().finish()
+                                if(skipTutorial){
+                                    navController.navigate(R.id.action_signInFragment_to_mainActivity)
+                                    requireActivity().finish()
+                                }else{
+                                    navController.navigate(R.id.action_signInFragment_to_tutorialFragment)
+                                }
                             }else{
                                 Toast.makeText(context,it.exception?.message, Toast.LENGTH_SHORT).show()
                             }
@@ -107,8 +122,12 @@ class SignInFragment : Fragment() {
                 OnCompleteListener {
                     if(it.isSuccessful){
                         Toast.makeText(context,"Успешный вход", Toast.LENGTH_SHORT).show()
-                        navController.navigate(R.id.action_signInFragment_to_mainActivity)
-                        requireActivity().finish()
+                        if(skipTutorial){
+                            navController.navigate(R.id.action_signInFragment_to_mainActivity)
+                            requireActivity().finish()
+                        }else{
+                            navController.navigate(R.id.action_signInFragment_to_tutorialFragment)
+                        }
                     }else{
                         Toast.makeText(context,it.exception?.message, Toast.LENGTH_SHORT).show()
                     }

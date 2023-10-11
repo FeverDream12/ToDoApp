@@ -8,6 +8,13 @@
         android:iconTint="@color/CircleColor"
         />
 
+    <item
+        android:id="@+id/copy_task"
+        android:title="Дублировать"
+        android:icon="@drawable/copy_24"
+        android:iconTint="@color/CircleColor"
+        />
+
     <item android:title="Перенести на..."
         android:icon="@drawable/schedule_24"
         android:iconTint="@color/CircleColor">

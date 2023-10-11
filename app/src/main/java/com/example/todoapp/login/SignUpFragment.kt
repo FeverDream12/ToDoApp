@@ -20,8 +20,8 @@ class SignUpFragment : Fragment() {
     private lateinit var binding: FragmentSignUpBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
-
         binding = FragmentSignUpBinding.inflate(inflater,container,false)
+
         binding.emailInput.setBackgroundColor(binding.cardView.cardBackgroundColor.defaultColor)
         binding.passwordInput.setBackgroundColor(binding.cardView.cardBackgroundColor.defaultColor)
         binding.passwordReInput.setBackgroundColor(binding.cardView.cardBackgroundColor.defaultColor)
@@ -32,21 +32,20 @@ class SignUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        init(view)
+        navController = Navigation.findNavController(view)
+        auth = FirebaseAuth.getInstance()
 
         binding.signInText.setOnClickListener{
             navController.navigate(R.id.action_signUpFragment_to_signInFragment)
         }
 
         binding.signUpNextButton.setOnClickListener{
-
             registerEvents()
         }
 
     }
 
     private fun registerEvents() {
-
         val email = binding.emailInput.text.toString().trim()
         val pass = binding.passwordInput.text.toString().trim()
         val repass = binding.passwordReInput.text.toString().trim()
@@ -57,8 +56,7 @@ class SignUpFragment : Fragment() {
                     OnCompleteListener {
                         if(it.isSuccessful){
                             Toast.makeText(context,"Успешная регистрация",Toast.LENGTH_SHORT).show()
-                            navController.navigate(R.id.action_signUpFragment_to_mainActivity)
-                            requireActivity().finish()
+                            navController.navigate(R.id.action_signUpFragment_to_tutorialFragment)
                         }else{
                             Toast.makeText(context,it.exception?.message,Toast.LENGTH_SHORT).show()
                         }
@@ -66,11 +64,5 @@ class SignUpFragment : Fragment() {
                 )
             }
         }
-    }
-
-    private fun init(view: View) {
-        navController = Navigation.findNavController(view)
-        auth = FirebaseAuth.getInstance()
-
     }
 }

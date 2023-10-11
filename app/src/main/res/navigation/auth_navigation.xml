@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_signInFragment_to_mainActivity"
             app:destination="@id/mainActivity" />
+        <action
+            android:id="@+id/action_signInFragment_to_tutorialFragment"
+            app:destination="@id/tutorialFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -40,9 +43,21 @@
         <action
             android:id="@+id/action_signUpFragment_to_mainActivity"
             app:destination="@id/mainActivity" />
+        <action
+            android:id="@+id/action_signUpFragment_to_tutorialFragment"
+            app:destination="@id/tutorialFragment" />
     </fragment>
     <activity
         android:id="@+id/mainActivity"
         android:name="com.example.todoapp.utilities.MainActivity"
         android:label="MainActivity" />
+    <fragment
+        android:id="@+id/tutorialFragment"
+        android:name="com.example.todoapp.login.TutorialFragment"
+        android:label="fragment_tutorial"
+        tools:layout="@layout/fragment_tutorial" >
+        <action
+            android:id="@+id/action_tutorialFragment_to_mainActivity"
+            app:destination="@id/mainActivity" />
+    </fragment>
 </navigation>

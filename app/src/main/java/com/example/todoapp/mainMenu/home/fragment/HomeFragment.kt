@@ -65,7 +65,7 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
         taskList = arrayListOf()
 
         binding.newTaskButton.setOnClickListener{
-            NewTaskSheet(null,taskList, null).show(childFragmentManager, "newTaskTag")
+            NewTaskSheet(null,taskList, null, null).show(childFragmentManager, "newTaskTag")
         }
 
         anim = AnimationUtils.loadLayoutAnimation(context,R.anim.layout_animation).animation
@@ -465,7 +465,7 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
     }
 
     override fun editTaskItem(taskItem: TaskItem) {
-        NewTaskSheet(taskItem,taskList,null).show(childFragmentManager, "editTaskTag")
+        NewTaskSheet(taskItem,taskList,null,null).show(childFragmentManager, "editTaskTag")
     }
 
     override fun completeTaskItem(taskItem: TaskItem) {
@@ -506,16 +506,32 @@ class HomeFragment : Fragment(), TaskItemClickListener, CategoryItemClickListene
             "day" ->{
                 taskItem.dueDate = LocalDate.parse(taskItem.dueDate).plusDays(1).toString()
                 updateItem(taskItem)
+                if(taskItem.notificationId != 0){
+                    cancelScheduledNotification(taskItem.notificationId!!)
+                    scheduleNotification(taskItem)
+                }
             }
             "week" ->{
                 taskItem.dueDate = LocalDate.parse(taskItem.dueDate).plusWeeks(1).toString()
                 updateItem(taskItem)
+                if(taskItem.notificationId != 0){
+                    cancelScheduledNotification(taskItem.notificationId!!)
+                    scheduleNotification(taskItem)
+                }
             }
             "month" ->{
                 taskItem.dueDate = LocalDate.parse(taskItem.dueDate).plusMonths(1).toString()
                 updateItem(taskItem)
+                if(taskItem.notificationId != 0){
+                    cancelScheduledNotification(taskItem.notificationId!!)
+                    scheduleNotification(taskItem)
+                }
             }
         }
+    }
+
+    override fun copyTaskItem(taskItem: TaskItem) {
+        NewTaskSheet(taskItem,taskList,null,"copy").show(childFragmentManager, "copyTaskTag")
     }
 
     private fun updateItem(taskItem: TaskItem) {

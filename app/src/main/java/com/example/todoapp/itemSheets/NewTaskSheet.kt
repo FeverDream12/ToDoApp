@@ -31,7 +31,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random.Default.nextInt
 
-class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>, val dueSetDate: String?) : BottomSheetDialogFragment() {
+class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>, val dueSetDate: String?, val copyTask : String?) : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentNewTaskSheetBinding
     private var dueTime: LocalTime? = null
@@ -133,16 +133,20 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>, v
                 dueDate = taskItem!!.dueDate!!
                 binding.DueText.text = "Отложено на: " + taskItem!!.dueDate
             }
-            if(taskItem!!.notificationId != 0){
+            if(taskItem!!.notificationId != 0 && copyTask == null){
                 gotNot = true
             }
             if(taskItem!!.dueTimeString != "null"){
                 binding.notifButton.visibility = ImageButton.VISIBLE
-                if(taskItem!!.notificationId != 0){
+                if(taskItem!!.notificationId != 0 && copyTask == null){
                     binding.notifButton.setImageResource(R.drawable.notification_off_24)
                 }
             }
         }else{
+            binding.taskTitle.text = "Новая задача"
+        }
+
+        if(copyTask != null){
             binding.taskTitle.text = "Новая задача"
         }
 
@@ -282,37 +286,57 @@ class NewTaskSheet(var taskItem: TaskItem?,val taskList : ArrayList<TaskItem>, v
 
             }else
             {
-                taskItem!!.name = name
-                taskItem!!.desc = desc
-                taskItem!!.category = taskCat
-                taskItem!!.priority = getPriority(priorityStr)
+                if (copyTask != null){
+                    val newTask : TaskItem
+                    if(dueDate == "null"){
+                        newTask = TaskItem(name,desc,dueTimeString,"null", LocalDate.now().toString(),"live",0,taskCat,getPriority(priorityStr),"false")
+                    }
+                    else{
+                        newTask = TaskItem(name,desc,dueTimeString,"null", dueDate,"live",0,taskCat,getPriority(priorityStr),"false")
+                    }
 
-                taskItem!!.dueTimeString = dueTimeString
+                    if(gotNot){
+                        newTask!!.notificationId = nextInt()
+                        scheduleNotification(newTask)
+                    }
 
-                if(dueDate == "null"){
-                    taskItem!!.dueDate = taskItem!!.dueDate
+                    val taskId = databaseRef.push().key!!
+
+                    databaseRef.child(taskId).setValue(newTask)
+                }else{
+                    taskItem!!.name = name
+                    taskItem!!.desc = desc
+                    taskItem!!.category = taskCat
+                    taskItem!!.priority = getPriority(priorityStr)
+
+                    taskItem!!.dueTimeString = dueTimeString
+
+                    if(dueDate == "null"){
+                        taskItem!!.dueDate = taskItem!!.dueDate
+                    }
+                    else{
+                        taskItem!!.dueDate = dueDate
+                    }
+
+                    if(gotNot && taskItem!!.notificationId == 0) {
+                        taskItem!!.notificationId = nextInt()
+                        scheduleNotification(taskItem!!)
+                    }
+
+                    if(gotNot && taskItem!!.notificationId != 0) {
+                        cancelScheduledNotification(taskItem!!.notificationId!!)
+                        taskItem!!.notificationId = nextInt()
+                        scheduleNotification(taskItem!!)
+                    }
+
+                    if(!gotNot && taskItem!!.notificationId != 0){
+                        cancelScheduledNotification(taskItem!!.notificationId!!)
+                        taskItem!!.notificationId = 0
+                    }
+
+                    updateItem(taskItem!!)
                 }
-                else{
-                    taskItem!!.dueDate = dueDate
-                }
 
-                if(gotNot && taskItem!!.notificationId == 0) {
-                    taskItem!!.notificationId = nextInt()
-                    scheduleNotification(taskItem!!)
-                }
-
-                if(gotNot && taskItem!!.notificationId != 0) {
-                    cancelScheduledNotification(taskItem!!.notificationId!!)
-                    taskItem!!.notificationId = nextInt()
-                    scheduleNotification(taskItem!!)
-                }
-
-                if(!gotNot && taskItem!!.notificationId != 0){
-                    cancelScheduledNotification(taskItem!!.notificationId!!)
-                    taskItem!!.notificationId = 0
-                }
-
-                updateItem(taskItem!!)
             }
 
             binding.name.setText("")

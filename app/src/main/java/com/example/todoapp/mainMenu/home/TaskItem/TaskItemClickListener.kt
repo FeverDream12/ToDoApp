@@ -6,4 +6,5 @@ interface TaskItemClickListener {
     fun deleteTaskItem(taskItem: TaskItem)
     fun setTaskFavorite(taskItem: TaskItem)
     fun rescheduleTaskItem(taskItem: TaskItem, time: String)
+    fun copyTaskItem(taskItem: TaskItem)
 }

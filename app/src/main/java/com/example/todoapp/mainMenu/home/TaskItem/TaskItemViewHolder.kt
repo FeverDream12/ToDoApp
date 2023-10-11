@@ -138,6 +138,10 @@ class TaskItemViewHolder(
                     clickListener.rescheduleTaskItem(taskItem,"month")
                     true
                 }
+                R.id.copy_task ->{
+                    clickListener.copyTaskItem(taskItem)
+                    true
+                }
                 else -> {
                     true
                 }

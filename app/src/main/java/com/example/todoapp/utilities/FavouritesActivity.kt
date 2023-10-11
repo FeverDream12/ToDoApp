@@ -310,7 +310,7 @@ class FavouritesActivity : AppCompatActivity(), TaskItemClickListener, NoteItemC
     }
 
     override fun editTaskItem(taskItem: TaskItem) {
-        NewTaskSheet(taskItem,taskList,null).show(this.supportFragmentManager, "editTaskTag")
+        NewTaskSheet(taskItem,taskList,null,null).show(this.supportFragmentManager, "editTaskTag")
     }
 
     override fun completeTaskItem(taskItem: TaskItem) {
@@ -361,6 +361,10 @@ class FavouritesActivity : AppCompatActivity(), TaskItemClickListener, NoteItemC
                 updateTaskItem(taskItem)
             }
         }
+    }
+
+    override fun copyTaskItem(taskItem: TaskItem) {
+        NewTaskSheet(taskItem,taskList,null,"copy").show(this.supportFragmentManager, "copyTaskTag")
     }
 
     private fun updateTaskItem(taskItem: TaskItem) {

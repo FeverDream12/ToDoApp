@@ -15,14 +15,14 @@ android {
         }
     }
     namespace 'com.example.todoapp'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.todoapp"
         minSdk 29
-        targetSdk 33
-        versionCode 3
-        versionName "1.2"
+        targetSdk 34
+        versionCode 5
+        versionName "1.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -81,4 +81,6 @@ dependencies {
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
 }
